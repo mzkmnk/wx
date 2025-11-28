@@ -6,7 +6,7 @@
   - 生成されたテンプレートを確認（UI の実装は行わない）
   - _要件: なし（将来の interactive-ui spec のための準備）_
 
-- [ ] 2. プロジェクト構造とコア型の設定
+- [x] 2. プロジェクト構造とコア型の設定
 
   - Cargo.toml に追加の依存関係を追加（clap, git2, serde, serde_json, anyhow, thiserror, proptest, dirs）
   - src/ディレクトリ構造を作成（cli, commands, service, config, git, models, utils）

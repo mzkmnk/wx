@@ -1,9 +1,18 @@
+// Module declarations
+pub mod cli;
+pub mod commands;
+pub mod config;
+pub mod git;
+pub mod models;
+pub mod service;
+pub mod utils;
+
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers};
 use ratatui::{
-    DefaultTerminal, Frame,
     style::Stylize,
     text::Line,
     widgets::{Block, Paragraph},
+    DefaultTerminal, Frame,
 };
 
 fn main() -> color_eyre::Result<()> {
@@ -38,18 +47,13 @@ impl App {
     }
 
     /// Renders the user interface.
-    ///
-    /// This is where you add new widgets. See the following resources for more information:
-    ///
-    /// - <https://docs.rs/ratatui/latest/ratatui/widgets/index.html>
-    /// - <https://github.com/ratatui/ratatui/tree/main/ratatui-widgets/examples>
     fn render(&mut self, frame: &mut Frame) {
-        let title = Line::from("Ratatui Simple Template")
+        let title = Line::from("wtx - Git worktree and workspace manager")
             .bold()
             .blue()
             .centered();
-        let text = "Hello, Ratatui!\n\n\
-            Created using https://github.com/ratatui/templates\n\
+        let text = "Welcome to wtx!\n\n\
+            A CLI tool for managing Git worktrees and VSCode workspaces.\n\
             Press `Esc`, `Ctrl-C` or `q` to stop running.";
         frame.render_widget(
             Paragraph::new(text)
@@ -60,12 +64,8 @@ impl App {
     }
 
     /// Reads the crossterm events and updates the state of [`App`].
-    ///
-    /// If your application needs to perform work in between handling events, you can use the
-    /// [`event::poll`] function to check if there are any events available with a timeout.
     fn handle_crossterm_events(&mut self) -> color_eyre::Result<()> {
         match event::read()? {
-            // it's important to check KeyEventKind::Press to avoid handling key release events
             Event::Key(key) if key.kind == KeyEventKind::Press => self.on_key_event(key),
             Event::Mouse(_) => {}
             Event::Resize(_, _) => {}
@@ -79,7 +79,6 @@ impl App {
         match (key.modifiers, key.code) {
             (_, KeyCode::Esc | KeyCode::Char('q'))
             | (KeyModifiers::CONTROL, KeyCode::Char('c') | KeyCode::Char('C')) => self.quit(),
-            // Add other key handlers here.
             _ => {}
         }
     }
