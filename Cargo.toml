@@ -1,0 +1,31 @@
+[package]
+name = "wtx"
+version = "0.1.0"
+description = "A CLI tool for managing Git worktrees and VSCode workspaces"
+authors = ["mzkmnk <mzk.mnk.dev@gmail.com>"]
+license = "MIT"
+edition = "2021"
+
+[dependencies]
+crossterm = "0.28.1"
+ratatui = "0.29.0"
+color-eyre = "0.6.3"
+clap = { version = "4", features = ["derive"] }
+git2 = "0.19"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+anyhow = "1"
+thiserror = "1"
+dirs = "5"
+regex = "1"
+
+[dev-dependencies]
+proptest = "1"
+tempfile = "3"
+
+# Read the optimization guideline for more details: https://ratatui.rs/recipes/apps/release-your-app/#optimizations
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
