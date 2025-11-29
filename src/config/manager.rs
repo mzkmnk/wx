@@ -1,7 +1,7 @@
-use std::fs::read_to_string;
+use std::fs::{create_dir_all, read_to_string, write};
 use std::path::PathBuf;
 
-use serde_json::from_str;
+use serde_json::{from_str, to_string_pretty};
 
 use crate::models::error::RegistrationError;
 use crate::models::Config;
@@ -39,7 +39,14 @@ impl ConfigManager {
     }
 
     pub fn save(&self, config: &Config) -> Result<(), RegistrationError> {
-        todo!()
+        if let Some(parent_path) = self.config_path.parent() {
+            create_dir_all(parent_path)?;
+        }
+
+        let content = to_string_pretty(config)?;
+
+        write(&self.config_path, content)?;
+        Ok(())
     }
 
     pub fn create_backup(&self) -> Result<(), RegistrationError> {
