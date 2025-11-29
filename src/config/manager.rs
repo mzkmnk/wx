@@ -1,4 +1,4 @@
-use std::fs::{self, create_dir_all, read_to_string, write};
+use std::fs::{copy, create_dir_all, read_to_string, write};
 use std::path::PathBuf;
 
 use serde_json::{from_str, to_string_pretty};
@@ -56,13 +56,21 @@ impl ConfigManager {
             ));
         }
 
-        fs::copy(&self.config_path, &self.backup_path)?;
+        copy(&self.config_path, &self.backup_path)?;
 
         Ok(())
     }
 
     pub fn restore_backup(&self) -> Result<(), RegistrationError> {
-        todo!()
+        if !self.backup_path.exists() {
+            return Err(RegistrationError::RestoreError(
+                "Cannot restore backup: config.json.bak not found".to_string(),
+            ));
+        }
+
+        copy(&self.backup_path, &self.config_path)?;
+
+        Ok(())
     }
 
     pub fn delete_backup(&self) -> Result<(), RegistrationError> {
