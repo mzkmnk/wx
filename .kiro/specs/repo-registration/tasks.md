@@ -23,7 +23,7 @@
   - テストが失敗することを確認（Red）
   - _要件: 6.1, 6.2, 6.3, 6.4, 6.5_
 
-- [ ] 3.2 ConfigManager の実装
+- [x] 3.2 ConfigManager の実装
 
   - ConfigManager 構造体と new()メソッドを実装
   - load()メソッドを実装（JSON 読み込みと検証）
