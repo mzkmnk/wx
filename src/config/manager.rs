@@ -1,4 +1,4 @@
-use std::fs::{create_dir_all, read_to_string, write};
+use std::fs::{self, create_dir_all, read_to_string, write};
 use std::path::PathBuf;
 
 use serde_json::{from_str, to_string_pretty};
@@ -50,7 +50,15 @@ impl ConfigManager {
     }
 
     pub fn create_backup(&self) -> Result<(), RegistrationError> {
-        todo!()
+        if !self.config_path.exists() {
+            return Err(RegistrationError::BackupError(
+                "config.jsonが存在しません。".to_string(),
+            ));
+        }
+
+        fs::copy(&self.config_path, &self.backup_path)?;
+
+        Ok(())
     }
 
     pub fn restore_backup(&self) -> Result<(), RegistrationError> {
