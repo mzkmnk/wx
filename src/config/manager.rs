@@ -1,5 +1,5 @@
 use std::fs::{copy, create_dir_all, read_to_string, remove_file, write};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use serde_json::{from_str, to_string_pretty};
 
@@ -20,7 +20,7 @@ impl ConfigManager {
         Ok(Self::with_base_dir(&base_dir))
     }
 
-    pub fn with_base_dir(base_dir: &PathBuf) -> Self {
+    pub fn with_base_dir(base_dir: &Path) -> Self {
         Self {
             config_path: base_dir.join("config.json"),
             backup_path: base_dir.join("config.json.bak"),
