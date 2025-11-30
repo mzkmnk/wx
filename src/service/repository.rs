@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::{fs::remove_dir_all, path::Path};
 
 use crate::{
     config::manager::ConfigManager,
@@ -12,30 +12,63 @@ pub struct RepositoryService {
 }
 
 impl RepositoryService {
-    fn new() -> Result<Self, RegistrationError> {
+    pub fn new() -> Result<Self, RegistrationError> {
         Ok(Self {
             config_manager: ConfigManager::new()?,
-            git_ops: GitOperations::default(),
+            git_ops: GitOperations,
         })
     }
 
-    fn with_base_dir(base_dir: &Path) -> Self {
+    pub fn with_base_dir(base_dir: &Path) -> Self {
         Self {
             config_manager: ConfigManager::with_base_dir(base_dir),
-            git_ops: GitOperations::default(),
+            git_ops: GitOperations,
         }
     }
 
-    fn register(&mut self, url: &str) -> Result<(), RegistrationError> {
-        todo!()
+    pub fn register(&mut self, url: &str) -> Result<(), RegistrationError> {
+        self.git_ops.validate_url(url)?;
+
+        let repo_name = self.git_ops.extract_repo_name(url)?;
+
+        let target_path = self
+            .config_manager
+            .base_dir()
+            .join(format!("{}.git", &repo_name));
+
+        self.git_ops.bare_clone(url, &target_path)?;
+
+        let mut config = self.config_manager.load()?;
+
+        config.add_repository(Repository {
+            name: repo_name,
+            remote: url.to_string(),
+            local_path: target_path.to_str().unwrap().to_string(),
+        })?;
+
+        self.config_manager.save(&config)?;
+
+        Ok(())
     }
 
-    fn unregister(&mut self, name: &str) -> Result<(), RegistrationError> {
-        todo!()
+    pub fn unregister(&mut self, repo_name: &str) -> Result<(), RegistrationError> {
+        let mut config = self.config_manager.load()?;
+
+        config.remove_repository(repo_name)?;
+
+        self.config_manager.save(&config)?;
+
+        remove_dir_all(
+            self.config_manager
+                .base_dir()
+                .join(format!("{}.git", repo_name)),
+        )?;
+
+        Ok(())
     }
 
-    fn list(&self) -> Result<Vec<Repository>, RegistrationError> {
-        todo!()
+    pub fn list(&self) -> Result<Vec<Repository>, RegistrationError> {
+        Ok(self.config_manager.load()?.repositories)
     }
 }
 
@@ -172,6 +205,8 @@ mod tests {
         let base_dir = dir.path().join(".wtx");
 
         create_config_file(&base_dir);
+
+        git2::Repository::init(base_dir.join("test.git")).unwrap();
 
         let mut repository_service = RepositoryService::with_base_dir(&base_dir);
 

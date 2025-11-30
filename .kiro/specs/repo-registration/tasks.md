@@ -84,7 +84,7 @@
   - テストが失敗することを確認（Red）
   - _要件: 1.1, 1.2, 1.3, 2.1, 2.2, 3.1, 3.2, 3.3_
 
-- [ ] 5.2 RepositoryService の実装
+- [x] 5.2 RepositoryService の実装
 
   - RepositoryService 構造体と new()メソッドを実装
   - register()メソッドを実装（バックアップ作成、bare クローン、config 更新）

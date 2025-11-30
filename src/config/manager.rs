@@ -7,8 +7,8 @@ use crate::models::error::RegistrationError;
 use crate::models::Config;
 
 pub struct ConfigManager {
-    config_path: PathBuf,
-    backup_path: PathBuf,
+    pub config_path: PathBuf,
+    pub backup_path: PathBuf,
 }
 
 impl ConfigManager {
@@ -79,6 +79,10 @@ impl ConfigManager {
         }
 
         Ok(())
+    }
+
+    pub fn base_dir(&self) -> &Path {
+        self.config_path.parent().unwrap()
     }
 }
 
