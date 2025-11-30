@@ -1,7 +1,7 @@
 # 実装計画
 
 - [ ] 1. workspace 関連のデータモデル定義
-- [ ] 1.1 worktree 関連のデータモデル定義
+- [x] 1.1 worktree 関連のデータモデル定義
 
   - src/models/workspace.rs を作成
   - WorktreeSelection（リポジトリ名、ブランチ名）を定義
