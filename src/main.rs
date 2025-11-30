@@ -6,6 +6,7 @@ pub mod git;
 pub mod models;
 pub mod service;
 pub mod utils;
+pub mod workspace;
 
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers};
 use ratatui::{
