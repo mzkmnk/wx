@@ -23,7 +23,7 @@
   - CleanResult（removed_worktrees、removed_workspace_files、warnings）を定義
   - _要件: 4.1_
 
-- [ ] 1.4 WorkspaceError エラー型の定義
+- [x] 1.4 WorkspaceError エラー型の定義
 
   - src/models/error.rs に WorkspaceError を追加
   - RepositoryNotFound、WorktreeAlreadyExists、WorkspaceFileAlreadyExists 等を定義

@@ -51,6 +51,36 @@ impl RegistrationError {
     }
 }
 
+#[derive(Error, Debug)]
+pub enum WorktreeError {
+    #[error("Repository '{0}' is not registered")]
+    RepositoryNotFound(String),
+
+    #[error("Worktree already exists at '{0}'")]
+    WorktreeAlreadyExists(String),
+
+    #[error("Workspace file already exists: '{0}'")]
+    WorkspaceFileAlreadyExists(String),
+
+    #[error("Branch '{0}' not found in repository '{1}'")]
+    BranchNotFound(String, String),
+
+    #[error("Git operation failed: {0}")]
+    GitError(#[from] git2::Error),
+
+    #[error("IO operation failed: {0}")]
+    IoError(#[from] std::io::Error),
+
+    #[error("JSON error: {0}")]
+    JsonError(#[from] serde_json::Error),
+
+    #[error("Rollback failed after error : {original_error}, rollback error: {rollback_error}")]
+    RollbackFailed {
+        original_error: String,
+        rollback_error: String,
+    },
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
