@@ -45,3 +45,23 @@ pub fn create_test_config_file(base_dir: &Path, repos: Vec<Repository>) {
     let json = serde_json::to_string(&config).unwrap();
     write(base_dir.join("config.json"), json).unwrap();
 }
+
+/// ja: テスト用のremote branchの作成
+/// en: Create a remote branch for testing
+pub fn add_test_remote_branch(repo: &git2::Repository, branch_name: &str) {
+    let tree_builder = repo.treebuilder(None).unwrap();
+    let tree_oid = tree_builder.write().unwrap();
+    let tree = repo.find_tree(tree_oid).unwrap();
+
+    let sig = git2::Signature::now("m4i", "test@example.com").unwrap();
+
+    let commit_oid = repo.commit(None, &sig, &sig, "Init", &tree, &[]).unwrap();
+
+    repo.reference(
+        &format!("refs/remotes/origin/{}", branch_name),
+        commit_oid,
+        true,
+        "test setup",
+    )
+    .unwrap();
+}

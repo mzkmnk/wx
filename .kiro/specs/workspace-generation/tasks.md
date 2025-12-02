@@ -45,7 +45,7 @@
   - テストが通ることを確認（Green）
   - _要件: 3.2_
 
-- [ ] 2.3 get_remote_branches() のテストと実装
+- [x] 2.3 get_remote_branches() のテストと実装
 
   - get_remote_branches() のテストを作成（Red）
   - get_remote_branches() を実装
