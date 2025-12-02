@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::error::RegistrationError;
+use super::error::WtxError;
 use super::repository::Repository;
 
 /// Configuration file structure for wtx
@@ -21,9 +21,9 @@ impl Config {
     /// Add a repository to the configuration
     ///
     /// Returns an error if a repository with the same name is already registered
-    pub fn add_repository(&mut self, repo: Repository) -> Result<(), RegistrationError> {
+    pub fn add_repository(&mut self, repo: Repository) -> Result<(), WtxError> {
         if self.repositories.iter().any(|r| r.name == repo.name) {
-            return Err(RegistrationError::AlreadyRegistered(repo.name));
+            return Err(WtxError::AlreadyRegistered(repo.name));
         }
         self.repositories.push(repo);
         Ok(())
@@ -32,12 +32,12 @@ impl Config {
     /// Remove a repository from the configuration by name
     ///
     /// Returns the removed repository, or an error if not found
-    pub fn remove_repository(&mut self, name: &str) -> Result<Repository, RegistrationError> {
+    pub fn remove_repository(&mut self, name: &str) -> Result<Repository, WtxError> {
         let index = self
             .repositories
             .iter()
             .position(|r| r.name == name)
-            .ok_or_else(|| RegistrationError::NotFound(name.to_string()))?;
+            .ok_or_else(|| WtxError::RepositoryNotFound(name.to_string()))?;
         Ok(self.repositories.remove(index))
     }
 
@@ -88,7 +88,7 @@ mod tests {
         assert!(result.is_err());
         assert!(matches!(
             result.unwrap_err(),
-            RegistrationError::AlreadyRegistered(_)
+            WtxError::AlreadyRegistered(_)
         ));
     }
 
@@ -111,7 +111,7 @@ mod tests {
         assert!(result.is_err());
         assert!(matches!(
             result.unwrap_err(),
-            RegistrationError::NotFound(_)
+            WtxError::RepositoryNotFound(_)
         ));
     }
 

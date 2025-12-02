@@ -4,6 +4,5 @@ pub mod repository;
 pub mod workspace;
 
 pub use config::Config;
-pub use error::RegistrationError;
-pub use error::WorktreeError;
+pub use error::WtxError;
 pub use repository::Repository;
