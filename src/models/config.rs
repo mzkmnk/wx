@@ -60,15 +60,7 @@ impl Config {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    /// テスト用のリポジトリを生成するヘルパー関数
-    fn create_test_repo(name: &str) -> Repository {
-        Repository::new(
-            name.to_string(),
-            format!("git@github.com:org/{}.git", name),
-            format!("/home/user/.wtx/{}.git", name),
-        )
-    }
+    use crate::utils::test_helpers::*;
 
     #[test]
     fn test_config_new() {
@@ -79,16 +71,20 @@ mod tests {
     #[test]
     fn test_config_add_repository() {
         let mut config = Config::new();
-        assert!(config.add_repository(create_test_repo("frontend")).is_ok());
+        assert!(config
+            .add_repository(create_test_repository("frontend"))
+            .is_ok());
         assert_eq!(config.repositories.len(), 1);
     }
 
     #[test]
     fn test_config_add_duplicate_repository() {
         let mut config = Config::new();
-        assert!(config.add_repository(create_test_repo("frontend")).is_ok());
+        assert!(config
+            .add_repository(create_test_repository("frontend"))
+            .is_ok());
 
-        let result = config.add_repository(create_test_repo("frontend"));
+        let result = config.add_repository(create_test_repository("frontend"));
         assert!(result.is_err());
         assert!(matches!(
             result.unwrap_err(),
@@ -99,7 +95,9 @@ mod tests {
     #[test]
     fn test_config_remove_repository() {
         let mut config = Config::new();
-        config.add_repository(create_test_repo("frontend")).unwrap();
+        config
+            .add_repository(create_test_repository("frontend"))
+            .unwrap();
 
         let removed = config.remove_repository("frontend");
         assert!(removed.is_ok());
@@ -120,7 +118,9 @@ mod tests {
     #[test]
     fn test_config_find_repository() {
         let mut config = Config::new();
-        config.add_repository(create_test_repo("frontend")).unwrap();
+        config
+            .add_repository(create_test_repository("frontend"))
+            .unwrap();
 
         let found = config.find_repository("frontend");
         assert!(found.is_some());
@@ -133,7 +133,9 @@ mod tests {
     #[test]
     fn test_config_has_repository() {
         let mut config = Config::new();
-        config.add_repository(create_test_repo("frontend")).unwrap();
+        config
+            .add_repository(create_test_repository("frontend"))
+            .unwrap();
 
         assert!(config.has_repository("frontend"));
         assert!(!config.has_repository("backend"));
@@ -142,7 +144,9 @@ mod tests {
     #[test]
     fn test_config_has_remote() {
         let mut config = Config::new();
-        config.add_repository(create_test_repo("frontend")).unwrap();
+        config
+            .add_repository(create_test_repository("frontend"))
+            .unwrap();
 
         assert!(config.has_remote("git@github.com:org/frontend.git"));
         assert!(!config.has_remote("git@github.com:org/backend.git"));
@@ -151,8 +155,12 @@ mod tests {
     #[test]
     fn test_config_serialization() {
         let mut config = Config::new();
-        config.add_repository(create_test_repo("frontend")).unwrap();
-        config.add_repository(create_test_repo("backend")).unwrap();
+        config
+            .add_repository(create_test_repository("frontend"))
+            .unwrap();
+        config
+            .add_repository(create_test_repository("backend"))
+            .unwrap();
 
         let json = serde_json::to_string(&config).unwrap();
         let deserialized: Config = serde_json::from_str(&json).unwrap();

@@ -52,14 +52,8 @@ impl GitOperations {
 
 #[cfg(test)]
 mod tests {
-
-    use tempfile::{tempdir, TempDir};
-
     use super::*;
-
-    fn create_temp_dir() -> TempDir {
-        tempdir().unwrap()
-    }
+    use crate::utils::test_helpers::*;
 
     #[test]
     fn test_validate_url_https_valid() {
@@ -168,11 +162,10 @@ mod tests {
 
     #[test]
     fn test_bare_clone() {
-        let dir = create_temp_dir();
+        let (dir, _base_dir) = setup_test_dirs();
 
         let target_path = dir.path().join("target.git");
-        let source_repo = dir.path().join("source");
-        git2::Repository::init(&source_repo).unwrap();
+        let source_repo = create_test_git_repo(dir.path(), "source");
 
         let git_operations = GitOperations::default();
 

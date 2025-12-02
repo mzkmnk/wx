@@ -74,17 +74,8 @@ impl RepositoryService {
 
 #[cfg(test)]
 mod tests {
-    use std::fs::{create_dir_all, write};
-
-    use tempfile::tempdir;
-
     use super::*;
-
-    fn create_config_file(dir_path: &Path) {
-        create_dir_all(dir_path).unwrap();
-        let json = r#"{"repositories":[{"name":"test","remote":"git@github.com:org/test.git","local_path":"/home/user/.wtx/test.git"}]}"#;
-        write(dir_path.join("config.json"), json).unwrap();
-    }
+    use crate::utils::test_helpers::*;
 
     #[test]
     fn test_repository_service_new() {
@@ -95,14 +86,10 @@ mod tests {
 
     #[test]
     fn test_repository_service_register_valid_url() {
-        let dir = tempdir().unwrap();
+        let (dir, base_dir) = setup_test_dirs();
 
-        let base_dir = dir.path().join(".wtx");
-
-        let soruce_repo = dir.path().join("source_repo.git");
-        git2::Repository::init(&soruce_repo).unwrap();
-        let source_repo2 = dir.path().join("source_repo2.git");
-        git2::Repository::init(&source_repo2).unwrap();
+        let soruce_repo = create_test_git_repo(dir.path(), "source_repo.git");
+        let source_repo2 = create_test_git_repo(dir.path(), "source_repo2.git");
 
         let mut repository_service = RepositoryService::with_base_dir(&base_dir);
 
@@ -141,10 +128,8 @@ mod tests {
 
     #[test]
     fn test_repository_service_register_is_not_same_url() {
-        let dir = tempdir().unwrap();
-        let base_dir = dir.path().join(".wtx");
-        let source_repo = dir.path().join("source_repo.git");
-        git2::Repository::init(&source_repo).unwrap();
+        let (dir, base_dir) = setup_test_dirs();
+        let source_repo = create_test_git_repo(dir.path(), "source_repo.git");
 
         let mut repository_service = RepositoryService::with_base_dir(&base_dir);
 
@@ -179,8 +164,7 @@ mod tests {
 
     #[test]
     fn test_repository_service_register_invalid_url() {
-        let dir = tempdir().unwrap();
-        let base_dir = dir.path().join(".wtx");
+        let (_dir, base_dir) = setup_test_dirs();
         let mut repository_service = RepositoryService::with_base_dir(&base_dir);
 
         assert!(repository_service.register("https://github.com").is_err())
@@ -188,10 +172,9 @@ mod tests {
 
     #[test]
     fn test_repository_service_list() {
-        let dir = tempdir().unwrap();
-        let base_dir = dir.path().join(".wtx");
+        let (_dir, base_dir) = setup_test_dirs();
 
-        create_config_file(&base_dir);
+        create_test_config_file(&base_dir, vec![create_test_repository("test")]);
 
         let repository_service = RepositoryService::with_base_dir(&base_dir);
 
@@ -201,12 +184,11 @@ mod tests {
 
     #[test]
     fn test_repository_service_unregister() {
-        let dir = tempdir().unwrap();
-        let base_dir = dir.path().join(".wtx");
+        let (_dir, base_dir) = setup_test_dirs();
 
-        create_config_file(&base_dir);
+        create_test_config_file(&base_dir, vec![create_test_repository("test")]);
 
-        git2::Repository::init(base_dir.join("test.git")).unwrap();
+        create_test_bare_repo(&base_dir, "test");
 
         let mut repository_service = RepositoryService::with_base_dir(&base_dir);
 
@@ -227,10 +209,9 @@ mod tests {
 
     #[test]
     fn test_repository_service_unregister_not_found() {
-        let dir = tempdir().unwrap();
-        let base_dir = dir.path().join(".wtx");
+        let (_dir, base_dir) = setup_test_dirs();
 
-        create_config_file(&base_dir);
+        create_test_config_file(&base_dir, vec![create_test_repository("test")]);
 
         let mut repository_service = RepositoryService::with_base_dir(&base_dir);
 
