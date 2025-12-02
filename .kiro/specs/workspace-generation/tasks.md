@@ -38,7 +38,7 @@
   - src/workspace/mod.rs を作成してモジュールをエクスポート
   - _要件: 1.1_
 
-- [ ] 2.2 fetch() のテストと実装
+- [x] 2.2 fetch() のテストと実装
 
   - fetch() のテストを作成（Red）
   - fetch() を実装（git2 を使用）

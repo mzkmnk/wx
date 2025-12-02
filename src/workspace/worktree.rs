@@ -1,4 +1,6 @@
-use std::{default, path::Path};
+use std::path::Path;
+
+use git2::Repository;
 
 use crate::models::WtxError;
 
@@ -6,13 +8,13 @@ use crate::models::WtxError;
 pub struct WorktreeManager;
 
 impl WorktreeManager {
+    pub fn fetch(&self, bare_repo_path: &Path) -> Result<(), WtxError> {
+        let repo = Repository::open(bare_repo_path)?;
 
-    pub fn fetch(&self) {
-        todo!()
+        let mut remote = repo.find_remote("origin")?;
+
+        remote.fetch(&[] as &[&str], None, None)?;
+
+        Ok(())
     }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
 }
