@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use git2::{BranchType, Repository};
+use git2::{BranchType, Repository, WorktreeAddOptions};
 
 use crate::models::WtxError;
 
@@ -54,13 +54,43 @@ impl WorktreeManager {
 
         Ok(false)
     }
+
+    pub fn create_worktree(
+        &self,
+        bare_repo_path: &Path,
+        target_path: &Path,
+        branch: &str,
+    ) -> Result<(), WtxError> {
+        let repo = Repository::open_bare(&bare_repo_path)?;
+
+        let branch = repo.find_branch(&format!("origin/{}", branch), BranchType::Remote)?;
+        let reference = branch.into_reference();
+
+        let mut opts = WorktreeAddOptions::new();
+        opts.reference(Some(&reference));
+
+        let worktree_name = target_path.file_name().and_then(|n| n.to_str());
+
+        match worktree_name {
+            Some(name) => {
+                repo.worktree(name, target_path, Some(&opts))?;
+                Ok(())
+            }
+            None => {
+                return Err(WtxError::InvalidUrl(
+                    target_path.to_string_lossy().to_string(),
+                ))
+            }
+        }
+    }
 }
 
 #[cfg(test)]
 mod tests {
 
     use crate::utils::test_helpers::{
-        add_test_remote_branch, create_test_bare_repo, setup_test_dirs,
+        add_test_local_branch, add_test_remote_branch, create_test_bare_repo, create_test_git_repo,
+        setup_test_dirs,
     };
 
     use super::*;
