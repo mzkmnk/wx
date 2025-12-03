@@ -52,7 +52,7 @@
   - テストが通ることを確認（Green）
   - _要件: 3.1_
 
-- [ ] 2.4 branch_exists() のテストと実装
+- [x] 2.4 branch_exists() のテストと実装
 
   - branch_exists() のテストを作成（Red）
   - branch_exists() を実装
