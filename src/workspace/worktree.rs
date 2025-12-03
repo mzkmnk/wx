@@ -89,8 +89,7 @@ impl WorktreeManager {
 mod tests {
 
     use crate::utils::test_helpers::{
-        add_test_local_branch, add_test_remote_branch, create_test_bare_repo, create_test_git_repo,
-        setup_test_dirs,
+        add_test_remote_branch, create_test_bare_repo, setup_test_dirs,
     };
 
     use super::*;
