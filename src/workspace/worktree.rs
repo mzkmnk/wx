@@ -19,7 +19,7 @@ impl WorktreeManager {
     }
 
     pub fn get_remote_branches(&self, bare_repo_path: &Path) -> Result<Vec<String>, WtxError> {
-        let repo = Repository::open(bare_repo_path)?;
+        let repo = Repository::open_bare(bare_repo_path)?;
         let branches = repo.branches(Some(BranchType::Remote))?;
 
         let mut remote_branches: Vec<String> = Vec::new();
@@ -39,7 +39,7 @@ impl WorktreeManager {
         bare_repo_path: &Path,
         target_branch_name: &str,
     ) -> Result<bool, WtxError> {
-        let repo = Repository::open(bare_repo_path)?;
+        let repo = Repository::open_bare(bare_repo_path)?;
         let branches = repo.branches(Some(BranchType::Remote))?;
 
         for branch in branches {
@@ -120,7 +120,7 @@ mod tests {
         let (_dir, base_dir) = setup_test_dirs();
         let bare_repo_path = create_test_bare_repo(&base_dir, "frontend");
 
-        let bare_repo = Repository::open(&bare_repo_path).unwrap();
+        let bare_repo = Repository::open_bare(&bare_repo_path).unwrap();
 
         add_test_remote_branch(&bare_repo, "main");
         add_test_remote_branch(&bare_repo, "auth");
@@ -138,7 +138,7 @@ mod tests {
     fn test_worktree_manager_branch_exists() {
         let (_dir, base_dir) = setup_test_dirs();
         let bare_repo_path = create_test_bare_repo(&base_dir, "frontend");
-        let bare_repo = Repository::open(&bare_repo_path).unwrap();
+        let bare_repo = Repository::open_bare(&bare_repo_path).unwrap();
         add_test_remote_branch(&bare_repo, "main");
         add_test_remote_branch(&bare_repo, "auth");
         add_test_remote_branch(&bare_repo, "dashboard");
