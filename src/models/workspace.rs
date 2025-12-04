@@ -18,7 +18,7 @@ pub struct WorktreeInfo {
 #[derive(Debug, Clone)]
 pub struct BranchInfo {
     pub name: String,
-    pub is_default: String,
+    pub is_default: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

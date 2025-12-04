@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "name": "creat-pr-draft",
+  "name": "create-pr-draft",
   "description": "エージェント停止時に、現在のブランチの変更内容をマージ先ブランチと比較し、関連するissueを確認した上で、指定フォーマットに沿ったドラフトPRを作成します。",
   "version": "1",
   "when": {

@@ -14,6 +14,9 @@ pub enum WtxError {
     RepositoryNotFound(String),
 
     // Worktree errors
+    #[error("Invalid path: '{0}'")]
+    InvalidPath(String),
+
     #[error("Worktree already exists at '{0}'")]
     WorktreeAlreadyExists(String),
 

@@ -76,7 +76,7 @@ impl WorktreeManager {
                 repo.worktree(name, target_path, Some(&opts))?;
                 Ok(())
             }
-            None => Err(WtxError::InvalidUrl(
+            None => Err(WtxError::InvalidPath(
                 target_path.to_string_lossy().to_string(),
             )),
         }
