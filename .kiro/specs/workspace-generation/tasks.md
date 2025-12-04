@@ -59,7 +59,7 @@
   - テストが通ることを確認（Green）
   - _要件: 1.3, 1.4_
 
-- [ ] 2.5 create_worktree() のテストと実装（既存ブランチ）
+- [x] 2.5 create_worktree() のテストと実装（既存ブランチ）
 
   - create_worktree() の既存ブランチテストを作成（Red）
   - create_worktree() を実装（既存ブランチの checkout）
@@ -80,7 +80,7 @@
   - テストが通ることを確認（Green）
   - _要件: 1.5_
 
-- [ ] 2.8 list_worktrees() のテストと実装
+- [x] 2.8 list_worktrees() のテストと実装
 
   - list_worktrees() のテストを作成（Red）
   - list_worktrees() を実装

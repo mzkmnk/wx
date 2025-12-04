@@ -83,6 +83,13 @@ impl WorktreeManager {
             }
         }
     }
+
+    pub fn list_worktrees(&self, bare_repo_path: &Path) -> Result<Vec<String>, WtxError> {
+        let repo = Repository::open_bare(bare_repo_path)?;
+        let worktrees = repo.worktrees()?;
+
+        Ok(worktrees.iter().flatten().map(String::from).collect())
+    }
 }
 
 #[cfg(test)]
