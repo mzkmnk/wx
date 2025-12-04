@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 
 use serde_json::{from_str, to_string_pretty};
 
-use crate::models::error::RegistrationError;
+use crate::models::error::WtxError;
 use crate::models::Config;
 
 pub struct ConfigManager {
@@ -12,9 +12,9 @@ pub struct ConfigManager {
 }
 
 impl ConfigManager {
-    pub fn new() -> Result<Self, RegistrationError> {
+    pub fn new() -> Result<Self, WtxError> {
         let base_dir = dirs::home_dir()
-            .ok_or(RegistrationError::HomeDirNotFound)?
+            .ok_or(WtxError::HomeDirNotFound)?
             .join(".wtx");
 
         Ok(Self::with_base_dir(&base_dir))
@@ -27,7 +27,7 @@ impl ConfigManager {
         }
     }
 
-    pub fn load(&self) -> Result<Config, RegistrationError> {
+    pub fn load(&self) -> Result<Config, WtxError> {
         if !self.config_path.exists() {
             return Ok(Config::new());
         }
@@ -38,7 +38,7 @@ impl ConfigManager {
         Ok(config)
     }
 
-    pub fn save(&self, config: &Config) -> Result<(), RegistrationError> {
+    pub fn save(&self, config: &Config) -> Result<(), WtxError> {
         if let Some(parent_path) = self.config_path.parent() {
             create_dir_all(parent_path)?;
         }
@@ -49,9 +49,9 @@ impl ConfigManager {
         Ok(())
     }
 
-    pub fn create_backup(&self) -> Result<(), RegistrationError> {
+    pub fn create_backup(&self) -> Result<(), WtxError> {
         if !self.config_path.exists() {
-            return Err(RegistrationError::BackupError(
+            return Err(WtxError::BackupError(
                 "Cannot create backup: config.json not found".to_string(),
             ));
         }
@@ -61,9 +61,9 @@ impl ConfigManager {
         Ok(())
     }
 
-    pub fn restore_backup(&self) -> Result<(), RegistrationError> {
+    pub fn restore_backup(&self) -> Result<(), WtxError> {
         if !self.backup_path.exists() {
-            return Err(RegistrationError::RestoreError(
+            return Err(WtxError::RestoreError(
                 "Cannot restore backup: config.json.bak not found".to_string(),
             ));
         }
@@ -73,7 +73,7 @@ impl ConfigManager {
         Ok(())
     }
 
-    pub fn delete_backup(&self) -> Result<(), RegistrationError> {
+    pub fn delete_backup(&self) -> Result<(), WtxError> {
         if self.backup_path.exists() {
             remove_file(&self.backup_path)?;
         }

@@ -1,9 +1,9 @@
 use crate::{
-    models::{RegistrationError, Repository},
+    models::{Repository, WtxError},
     service::repository::RepositoryService,
 };
 
-pub fn execute() -> Result<Vec<Repository>, RegistrationError> {
+pub fn execute() -> Result<Vec<Repository>, WtxError> {
     let repository_service = RepositoryService::new()?;
-    Ok(repository_service.list()?)
+    repository_service.list()
 }

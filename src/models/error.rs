@@ -1,8 +1,9 @@
 use thiserror::Error;
 
-/// Error types for repository registration operations
+/// Unified error type for wtx operations
 #[derive(Error, Debug)]
-pub enum RegistrationError {
+pub enum WtxError {
+    // Repository registration errors
     #[error("Invalid Git URL format: {0}. Expected SSH (git@host:path) or HTTPS (https://host/path) format")]
     InvalidUrl(String),
 
@@ -10,8 +11,23 @@ pub enum RegistrationError {
     AlreadyRegistered(String),
 
     #[error("Repository '{0}' not found")]
-    NotFound(String),
+    RepositoryNotFound(String),
 
+    // Worktree errors
+    #[error("Invalid path: '{0}'")]
+    InvalidPath(String),
+
+    #[error("Worktree already exists at '{0}'")]
+    WorktreeAlreadyExists(String),
+
+    #[error("Branch '{0}' not found in repository '{1}'")]
+    BranchNotFound(String, String),
+
+    // Workspace errors
+    #[error("Workspace file already exists: '{0}'")]
+    WorkspaceFileAlreadyExists(String),
+
+    // Common errors
     #[error("Git operation failed: {0}")]
     GitError(#[from] git2::Error),
 
@@ -32,9 +48,15 @@ pub enum RegistrationError {
 
     #[error("Failed to restore backup: {0}")]
     RestoreError(String),
+
+    #[error("Rollback failed after error: {original_error}, rollback error: {rollback_error}")]
+    RollbackFailed {
+        original_error: String,
+        rollback_error: String,
+    },
 }
 
-impl RegistrationError {
+impl WtxError {
     /// Create a configuration error with a custom message
     pub fn config(msg: impl Into<String>) -> Self {
         Self::ConfigError(msg.into())
@@ -57,28 +79,28 @@ mod tests {
 
     #[test]
     fn test_invalid_url_error_message() {
-        let error = RegistrationError::InvalidUrl("bad-url".to_string());
+        let error = WtxError::InvalidUrl("bad-url".to_string());
         assert!(error.to_string().contains("Invalid Git URL format"));
         assert!(error.to_string().contains("bad-url"));
     }
 
     #[test]
     fn test_already_registered_error_message() {
-        let error = RegistrationError::AlreadyRegistered("my-repo".to_string());
+        let error = WtxError::AlreadyRegistered("my-repo".to_string());
         assert!(error.to_string().contains("already registered"));
         assert!(error.to_string().contains("my-repo"));
     }
 
     #[test]
-    fn test_not_found_error_message() {
-        let error = RegistrationError::NotFound("missing-repo".to_string());
+    fn test_repository_not_found_error_message() {
+        let error = WtxError::RepositoryNotFound("missing-repo".to_string());
         assert!(error.to_string().contains("not found"));
         assert!(error.to_string().contains("missing-repo"));
     }
 
     #[test]
     fn test_config_error_helper() {
-        let error = RegistrationError::config("custom config error");
+        let error = WtxError::config("custom config error");
         assert!(error.to_string().contains("custom config error"));
     }
 }

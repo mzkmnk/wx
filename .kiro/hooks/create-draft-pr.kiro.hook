@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "create-pr-draft",
+  "description": "エージェント停止時に、現在のブランチの変更内容をマージ先ブランチと比較し、関連するissueを確認した上で、指定フォーマットに沿ったドラフトPRを作成します。",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "以下の手順でドラフトPRを作成してください：\n\n1. まず `gh pr view --json baseRefName,headRefName 2>/dev/null || git --no-pager branch -vv` でマージ先ブランチを確認\n2. `gh issue list --state open` で関連するissueがあるか確認し、ブランチ名やコミットメッセージから対応するissueを特定\n3. 対応するissueがある場合は `gh issue view <issue番号>` で内容を確認し概要を把握\n4. `git --no-pager diff <マージ先ブランチ>...HEAD` で変更内容を確認\n5. `git --no-pager log <マージ先ブランチ>..HEAD --oneline` でコミット履歴を確認\n6. 以下のフォーマットに沿ってPR本文を作成し、一時ファイル `/tmp/pr_body.md` に保存\n7. `gh pr create --draft --title \"タイトル\" --body-file /tmp/pr_body.md` でドラフトPRを作成\n\nPRフォーマット:\n```\n## 概要\n- このPRで対応したことを1〜2行で書く\n\n## 変更内容\n- [ ] 機能追加\n- [ ] バグ修正\n- [ ] リファクタリング\n- [ ] ドキュメント更新\n\n### 詳細\n- どの画面／APIにどんな変更を入れたかを箇条書きで\n\n## 動作確認\n- [ ] ローカルでビルド（コマンド：例 `npm run build`）\n- [ ] 主要な画面の動作確認（例：ログイン〜一覧表示〜詳細画面）\n- 補足があればここに\n\n## 備考\n- 気になる点や、次PRに回したTODOなど\n```\n\n注意事項：\n- 変更内容のチェックボックスは該当するものにチェックを入れる\n- issueがある場合は概要に「Closes #<issue番号>」を含める\n- 動作確認のビルドコマンドはプロジェクトに合わせて調整（Rustなら `cargo build`）"
+  }
+}
