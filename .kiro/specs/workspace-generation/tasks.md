@@ -147,7 +147,7 @@
   - src/workspace/mod.rs を更新してモジュールをエクスポート
   - _要件: 2.1_
 
-- [-] 3.2 generate() のテストと実装
+- [x] 3.2 generate() のテストと実装
 
   - generate() のテストを作成（正常系）（Red）
   - generate() を実装（JSON 生成）

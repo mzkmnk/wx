@@ -9,6 +9,9 @@ use crate::models::{
 pub struct WorkspaceFileManager;
 
 impl WorkspaceFileManager {
+    /// en: Generate a workspace file with the specified folders
+    ///
+    /// ja: 指定されたフォルダを含むworkspaceファイルを生成
     pub fn generate(
         &self,
         working_dir: &Path,
