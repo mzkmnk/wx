@@ -140,14 +140,14 @@
   - **検証: 要件 4.4**
 
 - [ ] 3. WorkspaceFileManager の実装（TDD）
-- [ ] 3.1 WorkspaceFileManager 構造体と new() の実装
+- [x] 3.1 WorkspaceFileManager 構造体と new() の実装
 
   - src/workspace/file.rs を作成
   - WorkspaceFileManager 構造体と new() メソッドを実装
   - src/workspace/mod.rs を更新してモジュールをエクスポート
   - _要件: 2.1_
 
-- [ ] 3.2 generate() のテストと実装
+- [-] 3.2 generate() のテストと実装
 
   - generate() のテストを作成（正常系）（Red）
   - generate() を実装（JSON 生成）
