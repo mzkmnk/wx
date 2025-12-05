@@ -30,6 +30,9 @@ impl WorkspaceFileManager {
         Ok(())
     }
 
+    /// en: Read a workspace file
+    ///
+    /// ja: workspaceファイルを読み込む
     pub fn read(&self, path: &Path) -> Result<WorkspaceFile, WtxError> {
         let content = fs::read_to_string(path)?;
         Ok(serde_json::from_str(&content)?)
