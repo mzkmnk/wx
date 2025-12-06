@@ -85,7 +85,7 @@ mod tests {
     }
 
     #[test]
-    fn test_get_ranches() {
+    fn test_get_branches() {
         let (_dir, base_dir) = setup_test_dirs();
         let mut mock_worktree_manager = MockWorktreeManager::new();
 
