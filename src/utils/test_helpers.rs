@@ -1,8 +1,9 @@
-use std::fs::{create_dir_all, write};
+use std::fs::{self, create_dir_all, write};
 use std::path::{Path, PathBuf};
 
 use tempfile::TempDir;
 
+use crate::models::workspace::WorkspaceFile;
 use crate::models::{Config, Repository};
 
 /// en: Set up a temporary directory and base_dir for testing
@@ -75,4 +76,14 @@ pub fn add_test_remote_branch(repo: &git2::Repository, branch_name: &str) {
         "test setup",
     )
     .unwrap();
+}
+
+/// en: Create a workspace file for testing
+///
+/// ja: テスト用のworkspaceファイルを作成
+pub fn test_create_workspace_file(working_dir: &Path, workspace_name: &str, folders: Vec<String>) {
+    let workspace_file = WorkspaceFile::new(folders);
+    let path = working_dir.join(format!("{}.code-workspace", workspace_name));
+    let json = serde_json::to_string(&workspace_file).unwrap();
+    fs::write(path, json).unwrap();
 }

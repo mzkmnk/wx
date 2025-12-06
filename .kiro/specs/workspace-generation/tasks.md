@@ -140,42 +140,42 @@
   - **検証: 要件 4.4**
 
 - [ ] 3. WorkspaceFileManager の実装（TDD）
-- [ ] 3.1 WorkspaceFileManager 構造体と new() の実装
+- [x] 3.1 WorkspaceFileManager 構造体と new() の実装
 
   - src/workspace/file.rs を作成
   - WorkspaceFileManager 構造体と new() メソッドを実装
   - src/workspace/mod.rs を更新してモジュールをエクスポート
   - _要件: 2.1_
 
-- [ ] 3.2 generate() のテストと実装
+- [x] 3.2 generate() のテストと実装
 
   - generate() のテストを作成（正常系）（Red）
   - generate() を実装（JSON 生成）
   - テストが通ることを確認（Green）
   - _要件: 2.1, 2.2, 2.3, 5.1, 5.2, 5.3_
 
-- [ ] 3.3 generate() の重複エラーテストと実装
+- [x] 3.3 generate() の重複エラーテストと実装
 
   - 重複 workspace ファイル作成時のエラーテストを作成（Red）
   - 重複チェックを実装
   - テストが通ることを確認（Green）
   - _要件: 2.5_
 
-- [ ] 3.4 read() のテストと実装
+- [x] 3.4 read() のテストと実装
 
   - read() のテストを作成（有効/無効な JSON）（Red）
   - read() を実装（JSON 読み込みと検証）
   - テストが通ることを確認（Green）
   - _要件: 5.4_
 
-- [ ] 3.5 exists() のテストと実装
+- [x] 3.5 exists() のテストと実装
 
   - exists() のテストを作成（Red）
   - exists() を実装
   - テストが通ることを確認（Green）
   - _要件: 2.5_
 
-- [ ] 3.6 delete() のテストと実装
+- [x] 3.6 delete() のテストと実装
 
   - delete() のテストを作成（Red）
   - delete() を実装
