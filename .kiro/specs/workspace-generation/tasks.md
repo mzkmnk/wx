@@ -222,7 +222,7 @@
   - すべてのテストが合格することを確認し、問題があればユーザーに質問する
 
 - [ ] 5. WorkspaceGenerationService の実装（TDD）
-- [ ] 5.1 WorkspaceGenerationService 構造体と new() の実装
+- [x] 5.1 WorkspaceGenerationService 構造体と new() の実装
 
   - src/workspace/service.rs を作成
   - WorkspaceGenerationService 構造体と new() メソッドを実装
