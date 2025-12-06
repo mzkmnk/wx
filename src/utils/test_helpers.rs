@@ -78,6 +78,9 @@ pub fn add_test_remote_branch(repo: &git2::Repository, branch_name: &str) {
     .unwrap();
 }
 
+/// en: Create a workspace file for testing
+///
+/// ja: テスト用のworkspaceファイルを作成
 pub fn test_create_workspace_file(working_dir: &Path, workspace_name: &str, folders: Vec<String>) {
     let workspace_file = WorkspaceFile::new(folders);
     let path = working_dir.join(format!("{}.code-workspace", workspace_name));
