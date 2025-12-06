@@ -155,6 +155,15 @@ mod tests {
     }
 
     #[test]
+    fn test_read_nonexistent_file() {
+        let workspace_file_manager = WorkspaceFileManager::default();
+
+        assert!(workspace_file_manager
+            .read(Path::new("nonexistent.code-workspace"))
+            .is_err())
+    }
+
+    #[test]
     fn test_exists() {
         let (_dir, _base_dir) = setup_test_dirs();
         let parent_path = _dir.path().join("work");
