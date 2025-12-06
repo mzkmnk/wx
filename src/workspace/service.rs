@@ -1,7 +1,6 @@
 use std::path::{Path, PathBuf};
 
 use crate::{
-    config::manager::ConfigManager,
     models::{workspace::WorktreeSelection, WtxError},
     utils::get_wtx_home,
     workspace::{file::WorkspaceFileManager, worktree::WorktreeManager},
@@ -11,7 +10,6 @@ use crate::{
 ///
 /// ja: worktreeを含むworkspaceを生成するサービス
 pub struct WorkspaceGenerationService<W: WorktreeManager> {
-    config_manager: ConfigManager,
     worktree_manager: W,
     workspace_file_manager: WorkspaceFileManager,
     wtx_home: PathBuf,
@@ -20,7 +18,6 @@ pub struct WorkspaceGenerationService<W: WorktreeManager> {
 impl<W: WorktreeManager> WorkspaceGenerationService<W> {
     pub fn new(worktree_manager: W, wtx_home: PathBuf) -> Result<Self, WtxError> {
         Ok(Self {
-            config_manager: ConfigManager::new()?,
             workspace_file_manager: WorkspaceFileManager::default(),
             worktree_manager,
             wtx_home,
