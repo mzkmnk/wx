@@ -229,7 +229,7 @@
   - src/workspace/mod.rs を更新してモジュールをエクスポート
   - _要件: 1.1_
 
-- [ ] 5.2 get_branches() のテストと実装
+- [x] 5.2 get_branches() のテストと実装
 
   - get_branches() のテストを作成（Red）
   - get_branches() を実装（fetch + ブランチ一覧取得）
