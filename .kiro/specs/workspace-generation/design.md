@@ -132,7 +132,7 @@ impl WorkspaceFileManager {
     pub fn read(&self, path: &Path) -> Result<WorkspaceFile>;
 
     /// Delete a workspace file
-    pub fn delete(&self, path: &Path) -> Result<()>;
+    pub fn delete(&self, working_dir: &Path, workspace_name: &str) -> Result<()>;
 
     /// Check if workspace file exists
     pub fn exists(&self, working_dir: &Path, workspace_name: &str) -> bool;

@@ -45,6 +45,15 @@ impl WorkspaceFileManager {
         let workspace_file_path = working_dir.join(format!("{}.code-workspace", workspace_name));
         workspace_file_path.exists()
     }
+
+    /// en: Delete a workspace file at the specified path
+    ///
+    /// ja: 指定されたパスのworkspaceファイルを削除
+    pub fn delete(&self, working_dir: &Path, workspace_name: &str) -> Result<(), WtxError> {
+        let workspace_file_path = working_dir.join(format! {"{}.code-workspace",workspace_name});
+        fs::remove_file(workspace_file_path)?;
+        Ok(())
+    }
 }
 
 #[cfg(test)]
@@ -161,5 +170,24 @@ mod tests {
 
         assert!(workspace_file_manager.exists(&parent_path, "wtx"));
         assert!(!workspace_file_manager.exists(&parent_path, "nonexistent"));
+    }
+
+    #[test]
+    fn test_delete() {
+        let (_dir, _base_dir) = setup_test_dirs();
+        let parent_path = _dir.path().join("work");
+        let frontend_repo_path = create_test_git_repo(&parent_path, "frontend");
+
+        test_create_workspace_file(
+            &parent_path,
+            "wtx",
+            vec![frontend_repo_path.to_string_lossy().to_string()],
+        );
+
+        let workspace_file_manager = WorkspaceFileManager::default();
+
+        assert!(workspace_file_manager.delete(&parent_path, "wtx").is_ok());
+        assert!(!parent_path.join(format!("{}.code-workspace", "wtx")).exists());
+        assert!(workspace_file_manager.delete(&parent_path,"wtx").is_err());
     }
 }
