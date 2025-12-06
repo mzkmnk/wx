@@ -187,7 +187,9 @@ mod tests {
         let workspace_file_manager = WorkspaceFileManager::default();
 
         assert!(workspace_file_manager.delete(&parent_path, "wtx").is_ok());
-        assert!(!parent_path.join(format!("{}.code-workspace", "wtx")).exists());
-        assert!(workspace_file_manager.delete(&parent_path,"wtx").is_err());
+        assert!(!parent_path
+            .join(format!("{}.code-workspace", "wtx"))
+            .exists());
+        assert!(workspace_file_manager.delete(&parent_path, "wtx").is_err());
     }
 }
