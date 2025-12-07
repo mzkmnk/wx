@@ -1,13 +1,11 @@
 use std::path::{Path, PathBuf};
 
 use crate::{
+    infrastructure::{filesystem::WorkspaceFileManager, git::WorktreeManager},
     models::{workspace::WorktreeSelection, WtxError},
-    workspace::{file::WorkspaceFileManager, worktree::WorktreeManager},
 };
 
-/// en: Service for generating workspaces with worktrees
-///
-/// ja: worktreeを含むworkspaceを生成するサービス
+/// worktreeを含むworkspaceを生成するサービス
 pub struct WorkspaceGenerationService<W: WorktreeManager> {
     worktree_manager: W,
     workspace_file_manager: WorkspaceFileManager,
@@ -23,18 +21,14 @@ impl<W: WorktreeManager> WorkspaceGenerationService<W> {
         })
     }
 
-    /// en: Returns the list of branches for the specified repository
-    ///
-    /// ja: 指定したリポジトリのブランチを返却する
+    /// 指定したリポジトリのブランチを返却する
     pub fn get_branches(&self, repo_name: &str) -> Result<Vec<String>, WtxError> {
         let bare_repo_path = self.wtx_home.join(format!("{}.git", repo_name));
         self.worktree_manager.fetch(&bare_repo_path)?;
         self.worktree_manager.get_remote_branches(&bare_repo_path)
     }
 
-    /// en: Generate workspace with worktrees from the specified selections
-    ///
-    /// ja: 指定された選択からworktreeを含むworkspaceを生成する
+    /// 指定された選択からworktreeを含むworkspaceを生成する
     pub fn generate(
         &self,
         working_dir: &Path,
@@ -65,14 +59,13 @@ impl<W: WorktreeManager> WorkspaceGenerationService<W> {
 
 #[cfg(test)]
 mod tests {
-
     use std::fs;
 
     use git2::Repository;
 
     use crate::{
+        infrastructure::git::{DefaultWorktreeManager, MockWorktreeManager},
         utils::test_helpers::{add_test_remote_branch, create_test_bare_repo, setup_test_dirs},
-        workspace::worktree::{DefaultWorktreeManager, MockWorktreeManager},
     };
 
     use super::*;

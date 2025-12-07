@@ -6,9 +6,7 @@ use crate::models::{workspace::WorkspaceFile, WtxError};
 pub struct WorkspaceFileManager;
 
 impl WorkspaceFileManager {
-    /// en: Generate a workspace file with the specified folders
-    ///
-    /// ja: 指定されたフォルダを含むworkspaceファイルを生成
+    /// 指定されたフォルダを含むworkspaceファイルを生成
     pub fn generate(
         &self,
         working_dir: &Path,
@@ -30,25 +28,19 @@ impl WorkspaceFileManager {
         Ok(())
     }
 
-    /// en: Read a workspace file
-    ///
-    /// ja: workspaceファイルを読み込む
+    /// workspaceファイルを読み込む
     pub fn read(&self, path: &Path) -> Result<WorkspaceFile, WtxError> {
         let content = fs::read_to_string(path)?;
         Ok(serde_json::from_str(&content)?)
     }
 
-    /// en: Check if a workspace file exists at the specified path
-    ///
-    /// ja: 指定されたパスにworkspaceファイルが存在するか確認
+    /// 指定されたパスにworkspaceファイルが存在するか確認
     pub fn exists(&self, working_dir: &Path, workspace_name: &str) -> bool {
         let workspace_file_path = working_dir.join(format!("{}.code-workspace", workspace_name));
         workspace_file_path.exists()
     }
 
-    /// en: Delete a workspace file at the specified path
-    ///
-    /// ja: 指定されたパスのworkspaceファイルを削除
+    /// 指定されたパスのworkspaceファイルを削除
     pub fn delete(&self, working_dir: &Path, workspace_name: &str) -> Result<(), WtxError> {
         let workspace_file_path = working_dir.join(format! {"{}.code-workspace",workspace_name});
         fs::remove_file(workspace_file_path)?;
@@ -61,6 +53,7 @@ mod tests {
     use crate::utils::test_helpers::{
         create_test_git_repo, setup_test_dirs, test_create_workspace_file,
     };
+    use std::fs;
 
     use super::*;
 

@@ -1,6 +1,6 @@
 use crate::{
     models::{Repository, WtxError},
-    service::repository::RepositoryService,
+    services::RepositoryService,
 };
 
 pub fn execute() -> Result<Vec<Repository>, WtxError> {

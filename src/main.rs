@@ -9,13 +9,11 @@ use crate::{
 // Module declarations
 pub mod cli;
 pub mod commands;
-pub mod config;
-pub mod git;
+pub mod infrastructure;
 pub mod models;
-pub mod service;
+pub mod services;
 pub mod tui;
 pub mod utils;
-pub mod workspace;
 
 fn main() -> color_eyre::Result<()> {
     color_eyre::install()?;

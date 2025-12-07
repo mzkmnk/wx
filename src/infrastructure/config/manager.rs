@@ -44,7 +44,6 @@ impl ConfigManager {
         }
 
         let content = to_string_pretty(config)?;
-
         write(&self.config_path, content)?;
         Ok(())
     }
@@ -57,7 +56,6 @@ impl ConfigManager {
         }
 
         copy(&self.config_path, &self.backup_path)?;
-
         Ok(())
     }
 
@@ -69,7 +67,6 @@ impl ConfigManager {
         }
 
         copy(&self.backup_path, &self.config_path)?;
-
         Ok(())
     }
 
@@ -77,7 +74,6 @@ impl ConfigManager {
         if self.backup_path.exists() {
             remove_file(&self.backup_path)?;
         }
-
         Ok(())
     }
 
@@ -88,10 +84,8 @@ impl ConfigManager {
 
 #[cfg(test)]
 mod tests {
-    use std::{
-        fs::{create_dir_all, write},
-        vec,
-    };
+    use std::fs::{create_dir_all, write};
+    use std::path::PathBuf;
 
     use tempfile::{tempdir, TempDir};
 
