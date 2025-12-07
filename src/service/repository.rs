@@ -36,15 +36,15 @@ impl RepositoryService {
             .base_dir()
             .join(format!("{}.git", &repo_name));
 
-        self.git_ops.bare_clone(url, &target_path)?;
-
         let mut config = self.config_manager.load()?;
-
+        
         config.add_repository(Repository {
             name: repo_name,
             remote: url.to_string(),
             local_path: target_path.to_str().unwrap().to_string(),
         })?;
+
+        self.git_ops.bare_clone(url, &target_path)?;
 
         self.config_manager.save(&config)?;
 
