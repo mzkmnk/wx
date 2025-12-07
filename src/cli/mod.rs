@@ -10,7 +10,15 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Commands {
-    Register { url: String },    // wtx register <url>
-    List,                        // wtx list
-    Unregister { name: String }, // wtx unregister <name>
+    Register {
+        url: String,
+    }, // wtx register <url>
+    List, // wtx list
+    Unregister {
+        name: String,
+    }, // wtx unregister <name>
+    New {
+        #[arg(long)]
+        workspace_name: Option<String>,
+    }, // wtx new
 }
