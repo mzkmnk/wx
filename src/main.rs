@@ -1,5 +1,4 @@
 use clap::Parser;
-use color_eyre::eyre;
 use console::style;
 
 use crate::{
@@ -28,7 +27,11 @@ fn main() -> color_eyre::Result<()> {
             Ok(_) => println!("Registered: {}", style(url).cyan()),
             Err(e) => match e {
                 WtxError::AlreadyRegistered(_) => {
-                    println!("{} {}", style("Already registered:").yellow(), style(url).cyan())
+                    println!(
+                        "{} {}",
+                        style("Already registered:").yellow(),
+                        style(url).cyan()
+                    )
                 }
                 _ => return Err(e.into()),
             },
