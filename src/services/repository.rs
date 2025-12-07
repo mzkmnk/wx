@@ -1,8 +1,7 @@
 use std::{fs::remove_dir_all, path::Path};
 
 use crate::{
-    config::manager::ConfigManager,
-    git::operations::GitOperations,
+    infrastructure::{config::ConfigManager, git::GitOperations},
     models::{Repository, WtxError},
 };
 

@@ -1,8 +1,8 @@
 use std::path::{Path, PathBuf};
 
 use crate::{
+    infrastructure::{filesystem::WorkspaceFileManager, git::WorktreeManager},
     models::{workspace::WorktreeSelection, WtxError},
-    workspace::{file::WorkspaceFileManager, worktree::WorktreeManager},
 };
 
 /// en: Service for generating workspaces with worktrees
@@ -65,14 +65,13 @@ impl<W: WorktreeManager> WorkspaceGenerationService<W> {
 
 #[cfg(test)]
 mod tests {
-
     use std::fs;
 
     use git2::Repository;
 
     use crate::{
+        infrastructure::git::{DefaultWorktreeManager, MockWorktreeManager},
         utils::test_helpers::{add_test_remote_branch, create_test_bare_repo, setup_test_dirs},
-        workspace::worktree::{DefaultWorktreeManager, MockWorktreeManager},
     };
 
     use super::*;

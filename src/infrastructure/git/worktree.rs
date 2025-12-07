@@ -153,10 +153,10 @@ impl WorktreeManager for DefaultWorktreeManager {
 
 #[cfg(test)]
 mod tests {
-
     use crate::utils::test_helpers::{
         add_test_remote_branch, create_test_bare_repo, setup_test_dirs,
     };
+    use git2::Repository;
 
     use super::*;
 

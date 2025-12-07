@@ -61,6 +61,7 @@ mod tests {
     use crate::utils::test_helpers::{
         create_test_git_repo, setup_test_dirs, test_create_workspace_file,
     };
+    use std::fs;
 
     use super::*;
 
