@@ -1,5 +1,6 @@
 use clap::Parser;
 use console::style;
+use ptree::{print_config::StyleWhen, print_tree_with, Color, PrintConfig, Style, TreeBuilder};
 
 use crate::{
     cli::{Cli, Commands},
@@ -34,9 +35,29 @@ fn main() -> color_eyre::Result<()> {
                 _ => return Err(e.into()),
             },
         },
-        Commands::List => {
-            todo!()
-        }
+        Commands::List => match commands::list::execute() {
+            Ok(repos) => {
+                if repos.is_empty() {
+                    println!("{}", style("No registered repositories.").yellow())
+                } else {
+                    let config = PrintConfig {
+                        styled: StyleWhen::Always,
+                        leaf: Style {
+                            foreground: Some(Color::Cyan),
+                            ..Style::default()
+                        },
+                        ..PrintConfig::default()
+                    };
+                    for repo in &repos {
+                        let tree = TreeBuilder::new(repo.name.clone())
+                            .add_empty_child(repo.remote.clone())
+                            .build();
+                        print_tree_with(&tree, &config)?;
+                    }
+                }
+            }
+            Err(e) => return Err(e.into()),
+        },
         Commands::Unregister { name: _name } => {
             todo!()
         }
