@@ -18,7 +18,6 @@ pub enum Commands {
         name: String,
     }, // wtx unregister <name>
     New {
-        #[arg(short, long)]
         workspace_name: String,
-    }, // wtx new
+    }, // wtx new <workspace_name>
 }
