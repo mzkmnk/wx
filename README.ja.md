@@ -52,12 +52,6 @@ wx new feature-auth
 
 対話形式でリポジトリとブランチを選択すると、`feature-auth/` ディレクトリが作成され、その中に worktree と `.code-workspace` ファイルが生成されます。
 
-### リポジトリの登録解除
-
-```bash
-wx unregister frontend
-```
-
 ## データ保存先
 
 ```

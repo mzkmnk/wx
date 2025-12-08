@@ -52,12 +52,6 @@ wx new feature-auth
 
 Select repositories and branches interactively, then a `feature-auth/` directory will be created containing worktrees and a `.code-workspace` file.
 
-### Unregister a repository
-
-```bash
-wx unregister frontend
-```
-
 ## Data Location
 
 ```
