@@ -41,6 +41,9 @@ pub fn execute(workspace_name: String) -> Result<(), WtxError> {
             }
 
             let workspace_dir = get_current_dir()?.join(&workspace_name);
+            if workspace_dir.exists() {
+                return Err(WtxError::General(format!("Workspace directory '{}' already exists", workspace_name)));
+            }
             fs::create_dir_all(&workspace_dir)?;
 
             let wtx_home = get_wtx_home().ok_or(WtxError::HomeDirNotFound)?;
