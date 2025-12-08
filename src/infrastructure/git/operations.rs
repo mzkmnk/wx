@@ -3,13 +3,13 @@ use std::path::Path;
 use git2::build::RepoBuilder;
 use regex::Regex;
 
-use crate::models::WtxError;
+use crate::models::WxError;
 
 #[derive(Default)]
 pub struct GitOperations;
 
 impl GitOperations {
-    pub fn validate_url(&self, url: &str) -> Result<(), WtxError> {
+    pub fn validate_url(&self, url: &str) -> Result<(), WxError> {
         // allow local path
         if Path::new(url).exists() {
             return Ok(());
@@ -21,11 +21,11 @@ impl GitOperations {
         if https_pattern.is_match(url) || ssh_pattern.is_match(url) {
             Ok(())
         } else {
-            Err(WtxError::InvalidUrl(url.to_string()))
+            Err(WxError::InvalidUrl(url.to_string()))
         }
     }
 
-    pub fn extract_repo_name(&self, url: &str) -> Result<String, WtxError> {
+    pub fn extract_repo_name(&self, url: &str) -> Result<String, WxError> {
         // uses Path crate when local path
         if let Some(file_name) = Path::new(url).file_name() {
             let name = file_name.to_string_lossy();
@@ -41,12 +41,12 @@ impl GitOperations {
         Ok(repo_name)
     }
 
-    pub fn bare_clone(&self, url: &str, target_path: &Path) -> Result<(), WtxError> {
+    pub fn bare_clone(&self, url: &str, target_path: &Path) -> Result<(), WxError> {
         RepoBuilder::new()
             .bare(true)
             .clone(url, target_path)
             .map(|_| ())
-            .map_err(WtxError::GitError)
+            .map_err(WxError::GitError)
     }
 }
 

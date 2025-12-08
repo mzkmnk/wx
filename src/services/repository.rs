@@ -2,7 +2,7 @@ use std::{fs::remove_dir_all, path::Path};
 
 use crate::{
     infrastructure::{config::ConfigManager, git::GitOperations},
-    models::{Repository, WtxError},
+    models::{Repository, WxError},
 };
 
 pub struct RepositoryService {
@@ -11,7 +11,7 @@ pub struct RepositoryService {
 }
 
 impl RepositoryService {
-    pub fn new() -> Result<Self, WtxError> {
+    pub fn new() -> Result<Self, WxError> {
         Ok(Self {
             config_manager: ConfigManager::new()?,
             git_ops: GitOperations,
@@ -25,7 +25,7 @@ impl RepositoryService {
         }
     }
 
-    pub fn register(&mut self, url: &str) -> Result<(), WtxError> {
+    pub fn register(&mut self, url: &str) -> Result<(), WxError> {
         self.git_ops.validate_url(url)?;
 
         let repo_name = self.git_ops.extract_repo_name(url)?;
@@ -50,7 +50,7 @@ impl RepositoryService {
         Ok(())
     }
 
-    pub fn unregister(&mut self, repo_name: &str) -> Result<(), WtxError> {
+    pub fn unregister(&mut self, repo_name: &str) -> Result<(), WxError> {
         let mut config = self.config_manager.load()?;
 
         config.remove_repository(repo_name)?;
@@ -66,7 +66,7 @@ impl RepositoryService {
         Ok(())
     }
 
-    pub fn list(&self) -> Result<Vec<Repository>, WtxError> {
+    pub fn list(&self) -> Result<Vec<Repository>, WxError> {
         Ok(self.config_manager.load()?.repositories)
     }
 }

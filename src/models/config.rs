@@ -1,9 +1,9 @@
 use serde::{Deserialize, Serialize};
 
-use super::error::WtxError;
+use super::error::WxError;
 use super::repository::Repository;
 
-/// Configuration file structure for wtx
+/// Configuration file structure for wx
 #[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq, Eq)]
 pub struct Config {
     /// List of registered repositories
@@ -21,9 +21,9 @@ impl Config {
     /// Add a repository to the configuration
     ///
     /// Returns an error if a repository with the same name is already registered
-    pub fn add_repository(&mut self, repo: Repository) -> Result<(), WtxError> {
+    pub fn add_repository(&mut self, repo: Repository) -> Result<(), WxError> {
         if self.repositories.iter().any(|r| r.name == repo.name) {
-            return Err(WtxError::AlreadyRegistered(repo.name));
+            return Err(WxError::AlreadyRegistered(repo.name));
         }
         self.repositories.push(repo);
         Ok(())
@@ -32,12 +32,12 @@ impl Config {
     /// Remove a repository from the configuration by name
     ///
     /// Returns the removed repository, or an error if not found
-    pub fn remove_repository(&mut self, name: &str) -> Result<Repository, WtxError> {
+    pub fn remove_repository(&mut self, name: &str) -> Result<Repository, WxError> {
         let index = self
             .repositories
             .iter()
             .position(|r| r.name == name)
-            .ok_or_else(|| WtxError::RepositoryNotFound(name.to_string()))?;
+            .ok_or_else(|| WxError::RepositoryNotFound(name.to_string()))?;
         Ok(self.repositories.remove(index))
     }
 
@@ -86,10 +86,7 @@ mod tests {
 
         let result = config.add_repository(create_test_repository("frontend"));
         assert!(result.is_err());
-        assert!(matches!(
-            result.unwrap_err(),
-            WtxError::AlreadyRegistered(_)
-        ));
+        assert!(matches!(result.unwrap_err(), WxError::AlreadyRegistered(_)));
     }
 
     #[test]
@@ -111,7 +108,7 @@ mod tests {
         assert!(result.is_err());
         assert!(matches!(
             result.unwrap_err(),
-            WtxError::RepositoryNotFound(_)
+            WxError::RepositoryNotFound(_)
         ));
     }
 

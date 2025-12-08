@@ -11,7 +11,7 @@ use crate::models::{Config, Repository};
 /// ja: テスト用の一時ディレクトリとbase_dirをセットアップ
 pub fn setup_test_dirs() -> (TempDir, PathBuf) {
     let dir = tempfile::tempdir().unwrap();
-    let base_dir = dir.path().join(".wtx");
+    let base_dir = dir.path().join(".wx");
     (dir, base_dir)
 }
 
@@ -40,7 +40,7 @@ pub fn create_test_repository(name: &str) -> Repository {
     Repository::new(
         name.to_string(),
         format!("git@github.com:org/{name}.git"),
-        format!("/home/user/.wtx/{name}.git"),
+        format!("/home/user/.wx/{name}.git"),
     )
 }
 

@@ -4,18 +4,18 @@ use dialoguer::{Input, MultiSelect};
 
 use crate::{
     infrastructure::git::DefaultWorktreeManager,
-    models::{workspace::WorktreeSelection, WtxError},
+    models::{workspace::WorktreeSelection, WxError},
     services::{RepositoryService, WorkspaceGenerationService},
-    utils::{get_current_dir, get_wtx_home},
+    utils::{get_current_dir, get_wx_home},
 };
 
-/// en: Execute the `wtx new` command to create worktrees and a workspace file interactively
+/// en: Execute the `wx new` command to create worktrees and a workspace file interactively
 ///
-/// ja: `wtx new` コマンドを実行し、インタラクティブにworktreeとworkspaceファイルを作成する
-pub fn execute(workspace_name: String) -> Result<(), WtxError> {
+/// ja: `wx new` コマンドを実行し、インタラクティブにworktreeとworkspaceファイルを作成する
+pub fn execute(workspace_name: String) -> Result<(), WxError> {
     let repos = RepositoryService::new()?.list()?;
     if repos.is_empty() {
-        return Err(WtxError::General("No repositories registered. Please register a repository first using 'wtx register <url>'".to_string()));
+        return Err(WxError::General("No repositories registered. Please register a repository first using 'wx register <url>'".to_string()));
     }
 
     let repos_name: Vec<&str> = repos.iter().map(|repo| repo.name.as_str()).collect();
@@ -30,7 +30,7 @@ pub fn execute(workspace_name: String) -> Result<(), WtxError> {
     match selected_repos {
         Ok(selected_repos) => {
             if selected_repos.is_empty() {
-                return Err(WtxError::General("No repositories selected".to_string()));
+                return Err(WxError::General("No repositories selected".to_string()));
             }
 
             for idx in selected_repos {
@@ -55,24 +55,24 @@ pub fn execute(workspace_name: String) -> Result<(), WtxError> {
 
             let workspace_dir = get_current_dir()?.join(&workspace_name);
             if workspace_dir.exists() {
-                return Err(WtxError::General(format!(
+                return Err(WxError::General(format!(
                     "Workspace directory '{}' already exists",
                     workspace_name
                 )));
             }
             fs::create_dir_all(&workspace_dir)?;
 
-            let wtx_home = get_wtx_home().ok_or(WtxError::HomeDirNotFound)?;
+            let wx_home = get_wx_home().ok_or(WxError::HomeDirNotFound)?;
             let worktree_manager = DefaultWorktreeManager;
 
-            WorkspaceGenerationService::new(worktree_manager, wtx_home)?.generate(
+            WorkspaceGenerationService::new(worktree_manager, wx_home)?.generate(
                 &workspace_dir,
                 worktree_selection,
                 &workspace_name,
             )?;
         }
         Err(_) => {
-            return Err(WtxError::General(
+            return Err(WxError::General(
                 "Repository selection was cancelled".to_string(),
             ));
         }

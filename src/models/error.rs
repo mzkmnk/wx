@@ -1,8 +1,8 @@
 use thiserror::Error;
 
-/// Unified error type for wtx operations
+/// Unified error type for wx operations
 #[derive(Error, Debug)]
-pub enum WtxError {
+pub enum WxError {
     // Repository registration errors
     #[error("Invalid Git URL format: {0}. Expected SSH (git@host:path) or HTTPS (https://host/path) format")]
     InvalidUrl(String),
@@ -64,7 +64,7 @@ pub enum WtxError {
     General(String),
 }
 
-impl WtxError {
+impl WxError {
     /// Create a configuration error with a custom message
     pub fn config(msg: impl Into<String>) -> Self {
         Self::ConfigError(msg.into())
@@ -87,28 +87,28 @@ mod tests {
 
     #[test]
     fn test_invalid_url_error_message() {
-        let error = WtxError::InvalidUrl("bad-url".to_string());
+        let error = WxError::InvalidUrl("bad-url".to_string());
         assert!(error.to_string().contains("Invalid Git URL format"));
         assert!(error.to_string().contains("bad-url"));
     }
 
     #[test]
     fn test_already_registered_error_message() {
-        let error = WtxError::AlreadyRegistered("my-repo".to_string());
+        let error = WxError::AlreadyRegistered("my-repo".to_string());
         assert!(error.to_string().contains("already registered"));
         assert!(error.to_string().contains("my-repo"));
     }
 
     #[test]
     fn test_repository_not_found_error_message() {
-        let error = WtxError::RepositoryNotFound("missing-repo".to_string());
+        let error = WxError::RepositoryNotFound("missing-repo".to_string());
         assert!(error.to_string().contains("not found"));
         assert!(error.to_string().contains("missing-repo"));
     }
 
     #[test]
     fn test_config_error_helper() {
-        let error = WtxError::config("custom config error");
+        let error = WxError::config("custom config error");
         assert!(error.to_string().contains("custom config error"));
     }
 }

@@ -1,6 +1,6 @@
 use std::{fs, path::Path};
 
-use crate::models::{workspace::WorkspaceFile, WtxError};
+use crate::models::{workspace::WorkspaceFile, WxError};
 
 #[derive(Default)]
 pub struct WorkspaceFileManager;
@@ -14,12 +14,12 @@ impl WorkspaceFileManager {
         workspace_dir: &Path,
         workspace_name: &str,
         folders: Vec<String>,
-    ) -> Result<(), WtxError> {
+    ) -> Result<(), WxError> {
         let workspace_file = WorkspaceFile::new(folders);
         let workspace_file_path = workspace_dir.join(format!("{workspace_name}.code-workspace"));
 
         if workspace_file_path.exists() {
-            return Err(WtxError::WorkspaceFileAlreadyExists(
+            return Err(WxError::WorkspaceFileAlreadyExists(
                 workspace_file_path.to_string_lossy().to_string(),
             ));
         }
@@ -33,7 +33,7 @@ impl WorkspaceFileManager {
     /// en: Read a workspace file
     ///
     /// ja: workspaceファイルを読み込む
-    pub fn read(&self, path: &Path) -> Result<WorkspaceFile, WtxError> {
+    pub fn read(&self, path: &Path) -> Result<WorkspaceFile, WxError> {
         let content = fs::read_to_string(path)?;
         Ok(serde_json::from_str(&content)?)
     }
@@ -49,7 +49,7 @@ impl WorkspaceFileManager {
     /// en: Delete a workspace file at the specified path
     ///
     /// ja: 指定されたパスのworkspaceファイルを削除
-    pub fn delete(&self, working_dir: &Path, workspace_name: &str) -> Result<(), WtxError> {
+    pub fn delete(&self, working_dir: &Path, workspace_name: &str) -> Result<(), WxError> {
         let workspace_file_path = working_dir.join(format! {"{workspace_name}.code-workspace"});
         fs::remove_file(workspace_file_path)?;
         Ok(())
@@ -77,7 +77,7 @@ mod tests {
         workspace_file_manager
             .generate(
                 &parent_path,
-                "wtx",
+                "wx",
                 vec![
                     frontend_repo_path.to_string_lossy().to_string(),
                     backend_repo_path.to_string_lossy().to_string(),
@@ -85,7 +85,7 @@ mod tests {
             )
             .unwrap();
 
-        assert!(parent_path.join("wtx.code-workspace").exists());
+        assert!(parent_path.join("wx.code-workspace").exists());
     }
 
     #[test]
@@ -100,7 +100,7 @@ mod tests {
         workspace_file_manager
             .generate(
                 &parent_path,
-                "wtx",
+                "wx",
                 vec![
                     frontend_repo_path.to_string_lossy().to_string(),
                     backend_repo_path.to_string_lossy().to_string(),
@@ -111,7 +111,7 @@ mod tests {
         assert!(workspace_file_manager
             .generate(
                 &parent_path,
-                "wtx",
+                "wx",
                 vec![
                     frontend_repo_path.to_string_lossy().to_string(),
                     backend_repo_path.to_string_lossy().to_string(),
@@ -119,7 +119,7 @@ mod tests {
             )
             .is_err());
 
-        assert!(parent_path.join("wtx.code-workspace").exists());
+        assert!(parent_path.join("wx.code-workspace").exists());
     }
 
     #[test]
@@ -131,7 +131,7 @@ mod tests {
 
         test_create_workspace_file(
             &parent_path,
-            "wtx",
+            "wx",
             vec![
                 frontend_repo_path.to_string_lossy().to_string(),
                 backend_repo_path.to_string_lossy().to_string(),
@@ -141,7 +141,7 @@ mod tests {
         let workspace_file_manager = WorkspaceFileManager;
 
         let workspace_file = workspace_file_manager
-            .read(&parent_path.join("wtx.code-workspace"))
+            .read(&parent_path.join("wx.code-workspace"))
             .unwrap();
 
         assert_eq!(workspace_file.folders.len(), 2);
@@ -173,10 +173,10 @@ mod tests {
 
         let workspace_file_manager = WorkspaceFileManager;
 
-        fs::write(parent_path.join("wtx.code-workspace"), "invalid json").unwrap();
+        fs::write(parent_path.join("wx.code-workspace"), "invalid json").unwrap();
 
         assert!(workspace_file_manager
-            .read(&parent_path.join("wtx.code-workspace"))
+            .read(&parent_path.join("wx.code-workspace"))
             .is_err())
     }
 
@@ -188,13 +188,13 @@ mod tests {
 
         test_create_workspace_file(
             &parent_path,
-            "wtx",
+            "wx",
             vec![frontend_repo_path.to_string_lossy().to_string()],
         );
 
         let workspace_file_manager = WorkspaceFileManager;
 
-        assert!(workspace_file_manager.exists(&parent_path, "wtx"));
+        assert!(workspace_file_manager.exists(&parent_path, "wx"));
         assert!(!workspace_file_manager.exists(&parent_path, "nonexistent"));
     }
 
@@ -206,16 +206,16 @@ mod tests {
 
         test_create_workspace_file(
             &parent_path,
-            "wtx",
+            "wx",
             vec![frontend_repo_path.to_string_lossy().to_string()],
         );
 
         let workspace_file_manager = WorkspaceFileManager;
 
-        assert!(workspace_file_manager.delete(&parent_path, "wtx").is_ok());
+        assert!(workspace_file_manager.delete(&parent_path, "wx").is_ok());
         assert!(!parent_path
-            .join(format!("{}.code-workspace", "wtx"))
+            .join(format!("{}.code-workspace", "wx"))
             .exists());
-        assert!(workspace_file_manager.delete(&parent_path, "wtx").is_err());
+        assert!(workspace_file_manager.delete(&parent_path, "wx").is_err());
     }
 }

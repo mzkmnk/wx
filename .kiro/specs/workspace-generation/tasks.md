@@ -305,21 +305,21 @@
 
 - [ ] 7.2 clean コマンド（引数なし）のテストと実装
 
-  - `wtx clean`（引数なし）のテストを作成（Red）
+  - `wx clean`（引数なし）のテストを作成（Red）
   - 使用方法表示を実装
   - テストが通ることを確認（Green）
   - _要件: 4.3_
 
 - [ ] 7.3 clean コマンド（指定 workspace）のテストと実装
 
-  - `wtx clean <workspace名>` のテストを作成（Red）
+  - `wx clean <workspace名>` のテストを作成（Red）
   - 指定 workspace 削除を実装
   - テストが通ることを確認（Green）
   - _要件: 4.1_
 
 - [ ] 7.4 clean コマンド（--all）のテストと実装
 
-  - `wtx clean --all` のテストを作成（Red）
+  - `wx clean --all` のテストを作成（Red）
   - 全体削除を実装
   - src/commands/mod.rs を更新
   - src/main.rs で clean コマンドを統合

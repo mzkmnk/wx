@@ -2,7 +2,7 @@ use std::path::{Path, PathBuf};
 
 use crate::{
     infrastructure::{filesystem::WorkspaceFileManager, git::WorktreeManager},
-    models::{workspace::WorktreeSelection, WtxError},
+    models::{workspace::WorktreeSelection, WxError},
 };
 
 /// en: Service for generating workspaces with worktrees
@@ -11,23 +11,23 @@ use crate::{
 pub struct WorkspaceGenerationService<W: WorktreeManager> {
     worktree_manager: W,
     workspace_file_manager: WorkspaceFileManager,
-    wtx_home: PathBuf,
+    wx_home: PathBuf,
 }
 
 impl<W: WorktreeManager> WorkspaceGenerationService<W> {
-    pub fn new(worktree_manager: W, wtx_home: PathBuf) -> Result<Self, WtxError> {
+    pub fn new(worktree_manager: W, wx_home: PathBuf) -> Result<Self, WxError> {
         Ok(Self {
             workspace_file_manager: WorkspaceFileManager,
             worktree_manager,
-            wtx_home,
+            wx_home,
         })
     }
 
     /// en: Returns the list of branches for the specified repository
     ///
     /// ja: 指定したリポジトリのブランチを返却する
-    pub fn get_branches(&self, repo_name: &str) -> Result<Vec<String>, WtxError> {
-        let bare_repo_path = self.wtx_home.join(format!("{repo_name}.git"));
+    pub fn get_branches(&self, repo_name: &str) -> Result<Vec<String>, WxError> {
+        let bare_repo_path = self.wx_home.join(format!("{repo_name}.git"));
         self.worktree_manager.fetch(&bare_repo_path)?;
         self.worktree_manager.get_remote_branches(&bare_repo_path)
     }
@@ -40,7 +40,7 @@ impl<W: WorktreeManager> WorkspaceGenerationService<W> {
         workspace_dir: &Path,
         worktree_selection: Vec<WorktreeSelection>,
         workspace_name: &str,
-    ) -> Result<(), WtxError> {
+    ) -> Result<(), WxError> {
         // create workspace file
         self.workspace_file_manager.generate(
             workspace_dir,
@@ -53,7 +53,7 @@ impl<W: WorktreeManager> WorkspaceGenerationService<W> {
 
         // create worktrees
         for ws in worktree_selection {
-            let bare_repo_path = self.wtx_home.join(format!("{}.git", ws.repo_name));
+            let bare_repo_path = self.wx_home.join(format!("{}.git", ws.repo_name));
             let target_path = workspace_dir.join(&ws.branch);
             self.worktree_manager
                 .create_worktree(&bare_repo_path, &target_path, &ws.branch)?;
@@ -99,7 +99,7 @@ mod tests {
         let workspace_generation_service =
             WorkspaceGenerationService::new(mock_worktree_manager, base_dir).unwrap();
 
-        let branches = workspace_generation_service.get_branches("wtx").unwrap();
+        let branches = workspace_generation_service.get_branches("wx").unwrap();
 
         assert_eq!(
             branches,
@@ -111,22 +111,22 @@ mod tests {
     fn test_generate() {
         let (dir, base_dir) = setup_test_dirs();
         let working_dir = dir.path().join("work/sso-feature");
-        let wtx_frontend_repo_name = String::from("wtx-frontend");
-        let wtx_backend_repo_name = String::from("wtx-backend");
+        let wx_frontend_repo_name = String::from("wx-frontend");
+        let wx_backend_repo_name = String::from("wx-backend");
         fs::create_dir_all(&working_dir).unwrap();
-        let wtx_frontend_repo_path = create_test_bare_repo(&base_dir, &wtx_frontend_repo_name);
-        let wtx_backend_repo_path = create_test_bare_repo(&base_dir, &wtx_backend_repo_name);
-        let wtx_frontend_repo = Repository::open_bare(&wtx_frontend_repo_path).unwrap();
-        let wtx_backend_repo = Repository::open_bare(&wtx_backend_repo_path).unwrap();
-        add_test_remote_branch(&wtx_frontend_repo, "sso-ui");
-        add_test_remote_branch(&wtx_backend_repo, "sso-api");
+        let wx_frontend_repo_path = create_test_bare_repo(&base_dir, &wx_frontend_repo_name);
+        let wx_backend_repo_path = create_test_bare_repo(&base_dir, &wx_backend_repo_name);
+        let wx_frontend_repo = Repository::open_bare(&wx_frontend_repo_path).unwrap();
+        let wx_backend_repo = Repository::open_bare(&wx_backend_repo_path).unwrap();
+        add_test_remote_branch(&wx_frontend_repo, "sso-ui");
+        add_test_remote_branch(&wx_backend_repo, "sso-api");
         let selection: Vec<WorktreeSelection> = vec![
             WorktreeSelection {
-                repo_name: wtx_frontend_repo_name,
+                repo_name: wx_frontend_repo_name,
                 branch: "sso-ui".to_string(),
             },
             WorktreeSelection {
-                repo_name: wtx_backend_repo_name,
+                repo_name: wx_backend_repo_name,
                 branch: "sso-api".to_string(),
             },
         ];
@@ -137,10 +137,10 @@ mod tests {
             WorkspaceGenerationService::new(worktree_manager, base_dir).unwrap();
 
         assert!(workspace_generation_service
-            .generate(&working_dir, selection, "wtx")
+            .generate(&working_dir, selection, "wx")
             .is_ok());
 
-        assert!(working_dir.join("wtx.code-workspace").exists());
+        assert!(working_dir.join("wx.code-workspace").exists());
         assert!(working_dir.join("sso-ui").exists());
         assert!(working_dir.join("sso-api").exists());
     }

@@ -1,6 +1,6 @@
-use crate::{models::WtxError, services::RepositoryService};
+use crate::{models::WxError, services::RepositoryService};
 
-pub fn execute(url: &str) -> Result<(), WtxError> {
+pub fn execute(url: &str) -> Result<(), WxError> {
     let mut repository_service = RepositoryService::new()?;
     repository_service.register(url)?;
     Ok(())

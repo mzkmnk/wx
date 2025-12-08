@@ -1,4 +1,4 @@
-# wtx
+# wx
 
 Git worktree と VSCode/Kiro workspace を統合管理する CLI ツール。
 
@@ -15,14 +15,14 @@ Git worktree と VSCode/Kiro workspace を統合管理する CLI ツール。
 ### crates.io から
 
 ```bash
-cargo install wtx
+cargo install wx
 ```
 
 ### ソースから
 
 ```bash
-git clone https://github.com/mzkmnk/wtx.git
-cd wtx
+git clone https://github.com/mzkmnk/wx.git
+cd wx
 cargo install --path .
 ```
 
@@ -31,23 +31,23 @@ cargo install --path .
 ### リポジトリを登録
 
 ```bash
-wtx register git@github.com:org/frontend.git
-wtx register git@github.com:org/backend.git
+wx register git@github.com:org/frontend.git
+wx register git@github.com:org/backend.git
 ```
 
-登録されたリポジトリは `~/.wtx/` に bare clone されます。
+登録されたリポジトリは `~/.wx/` に bare clone されます。
 
 ### 登録済みリポジトリを確認
 
 ```bash
-wtx list
+wx list
 ```
 
 ### ワークスペースを作成
 
 ```bash
 cd ~/work
-wtx new feature-auth
+wx new feature-auth
 ```
 
 対話形式でリポジトリとブランチを選択すると、`feature-auth/` ディレクトリが作成され、その中に worktree と `.code-workspace` ファイルが生成されます。
@@ -55,13 +55,13 @@ wtx new feature-auth
 ### リポジトリの登録解除
 
 ```bash
-wtx unregister frontend
+wx unregister frontend
 ```
 
 ## データ保存先
 
 ```
-~/.wtx/
+~/.wx/
 ├── config.json        # 登録リポジトリ一覧
 ├── frontend.git/      # bare リポジトリ
 └── backend.git/       # bare リポジトリ

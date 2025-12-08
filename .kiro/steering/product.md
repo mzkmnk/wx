@@ -1,8 +1,8 @@
-# wtx - プロダクト概要
+# wx - プロダクト概要
 
 ## 概要
 
-wtx は Git worktree と VSCode/Kiro workspace を統合管理する CLI ツール。
+wx は Git worktree と VSCode/Kiro workspace を統合管理する CLI ツール。
 
 ## 解決する課題
 
@@ -14,11 +14,11 @@ wtx は Git worktree と VSCode/Kiro workspace を統合管理する CLI ツー�
 
 ```bash
 # 1. リポジトリを事前登録（bare clone）
-wtx register git@github.com:org/frontend.git
+wx register git@github.com:org/frontend.git
 
 # 2. 作業ディレクトリで実行
 cd ~/work/feature-auth
-wtx
+wx
 
 # 3. インタラクティブ UI でリポジトリ・ブランチを選択
 # 4. worktree + workspace が自動生成される
@@ -26,15 +26,15 @@ wtx
 
 ## 主要コマンド
 
-| コマンド                | 説明                                            |
-| ----------------------- | ----------------------------------------------- |
-| `wtx register <url>`    | Git リポジトリを bare clone して登録            |
-| `wtx list`              | 登録済みリポジトリ一覧表示                      |
-| `wtx unregister <name>` | 登録解除                                        |
-| `wtx`                   | インタラクティブ UI → worktree + workspace 生成 |
-| `wtx clean`             | worktree + workspace を削除                     |
+| コマンド               | 説明                                            |
+| ---------------------- | ----------------------------------------------- |
+| `wx register <url>`    | Git リポジトリを bare clone して登録            |
+| `wx list`              | 登録済みリポジトリ一覧表示                      |
+| `wx unregister <name>` | 登録解除                                        |
+| `wx`                   | インタラクティブ UI → worktree + workspace 生成 |
+| `wx clean`             | worktree + workspace を削除                     |
 
 ## データ保存先
 
-- 設定ファイル: `~/.wtx/config.json`
-- bare リポジトリ: `~/.wtx/<repo-name>.git/`
+- 設定ファイル: `~/.wx/config.json`
+- bare リポジトリ: `~/.wx/<repo-name>.git/`

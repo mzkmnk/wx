@@ -1,26 +1,26 @@
 use std::path::PathBuf;
 
-use crate::models::WtxError;
+use crate::models::WxError;
 
-/// Get the wtx home directory (~/.wtx)
-pub fn get_wtx_home() -> Option<PathBuf> {
-    dirs::home_dir().map(|home| home.join(".wtx"))
+/// Get the wx home directory (~/.wx)
+pub fn get_wx_home() -> Option<PathBuf> {
+    dirs::home_dir().map(|home| home.join(".wx"))
 }
 
-/// Get the config file path (~/.wtx/config.json)
+/// Get the config file path (~/.wx/config.json)
 pub fn get_config_path() -> Option<PathBuf> {
-    get_wtx_home().map(|wtx_home| wtx_home.join("config.json"))
+    get_wx_home().map(|wx_home| wx_home.join("config.json"))
 }
 
-/// Get the backup config file path (~/.wtx/config.backup.json)
+/// Get the backup config file path (~/.wx/config.backup.json)
 pub fn get_backup_path() -> Option<PathBuf> {
-    get_wtx_home().map(|wtx_home| wtx_home.join("config.backup.json"))
+    get_wx_home().map(|wx_home| wx_home.join("config.backup.json"))
 }
 
 /// en: Returns the current working directory path
 ///
 /// ja: 現在いるディレクトリパスを返却する
-pub fn get_current_dir() -> Result<PathBuf, WtxError> {
+pub fn get_current_dir() -> Result<PathBuf, WxError> {
     Ok(std::env::current_dir()?)
 }
 
@@ -29,11 +29,11 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_get_wtx_home() {
-        let wtx_home = get_wtx_home();
-        assert!(wtx_home.is_some());
-        let path = wtx_home.unwrap();
-        assert!(path.ends_with(".wtx"));
+    fn test_get_wx_home() {
+        let wx_home = get_wx_home();
+        assert!(wx_home.is_some());
+        let path = wx_home.unwrap();
+        assert!(path.ends_with(".wx"));
     }
 
     #[test]

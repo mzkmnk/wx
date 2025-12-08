@@ -3,25 +3,25 @@ use std::path::Path;
 use git2::{BranchType, Repository, WorktreeAddOptions, WorktreePruneOptions};
 use mockall::automock;
 
-use crate::models::WtxError;
+use crate::models::WxError;
 
 #[automock]
 pub trait WorktreeManager {
-    fn fetch(&self, bare_repo_path: &Path) -> Result<(), WtxError>;
-    fn get_remote_branches(&self, bare_repo_path: &Path) -> Result<Vec<String>, WtxError>;
+    fn fetch(&self, bare_repo_path: &Path) -> Result<(), WxError>;
+    fn get_remote_branches(&self, bare_repo_path: &Path) -> Result<Vec<String>, WxError>;
     fn branch_exists(
         &self,
         bare_repo_path: &Path,
         target_branch_name: &str,
-    ) -> Result<bool, WtxError>;
+    ) -> Result<bool, WxError>;
     fn create_worktree(
         &self,
         bare_repo_path: &Path,
         target_path: &Path,
         branch: &str,
-    ) -> Result<(), WtxError>;
-    fn list_worktrees(&self, bare_repo_path: &Path) -> Result<Vec<String>, WtxError>;
-    fn remove_worktree(&self, bare_repo_path: &Path, worktree_name: &str) -> Result<(), WtxError>;
+    ) -> Result<(), WxError>;
+    fn list_worktrees(&self, bare_repo_path: &Path) -> Result<Vec<String>, WxError>;
+    fn remove_worktree(&self, bare_repo_path: &Path, worktree_name: &str) -> Result<(), WxError>;
 }
 
 /// en: Manager for Git worktree operations
@@ -34,7 +34,7 @@ impl WorktreeManager for DefaultWorktreeManager {
     /// en: Fetch latest changes from remote repository
     ///
     /// ja: リモートリポジトリから最新の変更をフェッチ
-    fn fetch(&self, bare_repo_path: &Path) -> Result<(), WtxError> {
+    fn fetch(&self, bare_repo_path: &Path) -> Result<(), WxError> {
         let repo = Repository::open_bare(bare_repo_path)?;
 
         let mut remote = repo.find_remote("origin")?;
@@ -47,7 +47,7 @@ impl WorktreeManager for DefaultWorktreeManager {
     /// en: Get all remote branches from the bare repository
     ///
     /// ja: bareリポジトリから全てのリモートブランチを取得
-    fn get_remote_branches(&self, bare_repo_path: &Path) -> Result<Vec<String>, WtxError> {
+    fn get_remote_branches(&self, bare_repo_path: &Path) -> Result<Vec<String>, WxError> {
         let repo = Repository::open_bare(bare_repo_path)?;
         let branches = repo.branches(Some(BranchType::Remote))?;
 
@@ -70,7 +70,7 @@ impl WorktreeManager for DefaultWorktreeManager {
         &self,
         bare_repo_path: &Path,
         target_branch_name: &str,
-    ) -> Result<bool, WtxError> {
+    ) -> Result<bool, WxError> {
         let repo = Repository::open_bare(bare_repo_path)?;
         let branches = repo.branches(Some(BranchType::Remote))?;
 
@@ -95,7 +95,7 @@ impl WorktreeManager for DefaultWorktreeManager {
         bare_repo_path: &Path,
         target_path: &Path,
         branch: &str,
-    ) -> Result<(), WtxError> {
+    ) -> Result<(), WxError> {
         let repo = Repository::open_bare(bare_repo_path)?;
 
         // Try to find local branch first
@@ -131,7 +131,7 @@ impl WorktreeManager for DefaultWorktreeManager {
                 repo.worktree(name, target_path, Some(&opts))?;
                 Ok(())
             }
-            None => Err(WtxError::InvalidPath(
+            None => Err(WxError::InvalidPath(
                 target_path.to_string_lossy().to_string(),
             )),
         }
@@ -140,7 +140,7 @@ impl WorktreeManager for DefaultWorktreeManager {
     /// en: List all worktrees associated with the bare repository
     ///
     /// ja: bareリポジトリに関連付けられた全てのworktreeを一覧表示
-    fn list_worktrees(&self, bare_repo_path: &Path) -> Result<Vec<String>, WtxError> {
+    fn list_worktrees(&self, bare_repo_path: &Path) -> Result<Vec<String>, WxError> {
         let repo = Repository::open_bare(bare_repo_path)?;
         let worktrees = repo.worktrees()?;
 
@@ -150,7 +150,7 @@ impl WorktreeManager for DefaultWorktreeManager {
     /// en: Remove a worktree and prune its references from the bare repository
     ///
     /// ja: worktreeを削除し、bareリポジトリからその参照をprune
-    fn remove_worktree(&self, bare_repo_path: &Path, worktree_name: &str) -> Result<(), WtxError> {
+    fn remove_worktree(&self, bare_repo_path: &Path, worktree_name: &str) -> Result<(), WxError> {
         let repo = Repository::open_bare(bare_repo_path)?;
         let worktree = repo.find_worktree(worktree_name)?;
 

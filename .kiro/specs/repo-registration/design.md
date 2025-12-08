@@ -2,7 +2,7 @@
 
 ## 概要
 
-リポジトリ登録機能は、wtx CLI ツールの基盤となるコンポーネントです。この機能は、Git リポジトリを bare クローンとして一元管理し、後続の worktree 作成機能のためのソースリポジトリを提供します。
+リポジトリ登録機能は、wx CLI ツールの基盤となるコンポーネントです。この機能は、Git リポジトリを bare クローンとして一元管理し、後続の worktree 作成機能のためのソースリポジトリを提供します。
 
 主要な責務:
 
@@ -36,7 +36,7 @@
 - **serde_json**: JSON 処理
 - **anyhow**: エラーハンドリング
 - **thiserror**: カスタムエラー型定義
-- **dirs**: ホームディレクトリパス解決（`~/.wtx` 用）
+- **dirs**: ホームディレクトリパス解決（`~/.wx` 用）
 
 ## コンポーネントとインターフェース
 
@@ -46,7 +46,7 @@
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
-#[command(name = "wtx")]
+#[command(name = "wx")]
 #[command(about = "Git worktree and workspace manager")]
 struct Cli {
     #[command(subcommand)]
@@ -244,7 +244,7 @@ _プロパティとは、システムのすべての有効な実行において�
 
 ### プロパティ 1: 登録後の bare リポジトリ存在
 
-*任意の*有効な Git URL に対して、register コマンドが成功した場合、~/.wtx/<name>.git に bare リポジトリが存在しなければならない
+*任意の*有効な Git URL に対して、register コマンドが成功した場合、~/.wx/<name>.git に bare リポジトリが存在しなければならない
 **検証: 要件 1.1**
 
 ### プロパティ 2: 登録後の config.json エントリ追加
@@ -461,9 +461,9 @@ src/
 
 ### 設定ファイルパス
 
-- **Config**: `~/.wtx/config.json`
-- **Backup**: `~/.wtx/config.backup.json`
-- **Bare repositories**: `~/.wtx/<repo-name>.git/`
+- **Config**: `~/.wx/config.json`
+- **Backup**: `~/.wx/config.backup.json`
+- **Bare repositories**: `~/.wx/<repo-name>.git/`
 
 ### URL 検証パターン
 

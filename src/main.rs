@@ -4,7 +4,7 @@ use ptree::{print_config::StyleWhen, print_tree_with, Color, PrintConfig, Style,
 
 use crate::{
     cli::{Cli, Commands},
-    models::WtxError,
+    models::WxError,
 };
 
 // Module declarations
@@ -25,7 +25,7 @@ fn main() -> color_eyre::Result<()> {
         Commands::Register { url } => match commands::register::execute(&url) {
             Ok(_) => println!("Registered: {}", style(url).cyan()),
             Err(e) => match e {
-                WtxError::AlreadyRegistered(_) => {
+                WxError::AlreadyRegistered(_) => {
                     println!(
                         "{} {}",
                         style("Already registered:").yellow(),
@@ -63,7 +63,7 @@ fn main() -> color_eyre::Result<()> {
                 println!("{}", style("Workspace created.").green());
             }
             Err(e) => match e {
-                WtxError::General(e) => {
+                WxError::General(e) => {
                     println!("{}", style(e).red())
                 }
                 _ => return Err(e.into()),

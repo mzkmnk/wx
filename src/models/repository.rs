@@ -7,7 +7,7 @@ pub struct Repository {
     pub name: String,
     /// Remote URL (SSH or HTTPS format)
     pub remote: String,
-    /// Local path to the bare repository (e.g., "~/.wtx/frontend.git")
+    /// Local path to the bare repository (e.g., "~/.wx/frontend.git")
     pub local_path: String,
 }
 
@@ -31,12 +31,12 @@ mod tests {
         let repo = Repository::new(
             "frontend".to_string(),
             "git@github.com:org/frontend.git".to_string(),
-            "/home/user/.wtx/frontend.git".to_string(),
+            "/home/user/.wx/frontend.git".to_string(),
         );
 
         assert_eq!(repo.name, "frontend");
         assert_eq!(repo.remote, "git@github.com:org/frontend.git");
-        assert_eq!(repo.local_path, "/home/user/.wtx/frontend.git");
+        assert_eq!(repo.local_path, "/home/user/.wx/frontend.git");
     }
 
     #[test]
@@ -44,7 +44,7 @@ mod tests {
         let repo = Repository::new(
             "backend".to_string(),
             "https://github.com/org/backend.git".to_string(),
-            "/home/user/.wtx/backend.git".to_string(),
+            "/home/user/.wx/backend.git".to_string(),
         );
 
         let json = serde_json::to_string(&repo).unwrap();
@@ -58,12 +58,12 @@ mod tests {
         let repo = Repository::new(
             "test-repo".to_string(),
             "git@github.com:org/test-repo.git".to_string(),
-            "/home/user/.wtx/test-repo.git".to_string(),
+            "/home/user/.wx/test-repo.git".to_string(),
         );
 
         let json = serde_json::to_string_pretty(&repo).unwrap();
         assert!(json.contains("\"name\": \"test-repo\""));
         assert!(json.contains("\"remote\": \"git@github.com:org/test-repo.git\""));
-        assert!(json.contains("\"local_path\": \"/home/user/.wtx/test-repo.git\""));
+        assert!(json.contains("\"local_path\": \"/home/user/.wx/test-repo.git\""));
     }
 }

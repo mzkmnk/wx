@@ -1,4 +1,4 @@
-# wtx プロジェクト概要
+# wx プロジェクト概要
 
 ## 背景と課題
 
@@ -23,24 +23,24 @@
 
 ## ソリューション
 
-`wtx` - Git worktree と VSCode workspace を統合管理する CLI ツール
+`wx` - Git worktree と VSCode workspace を統合管理する CLI ツール
 
 ### 名前の由来
 
-- **w**ork**t**ree + workspace の **x**（拡張・統合）
+- **w**orktree + workspace の **x**（拡張・統合）
 - 短くて打ちやすい
 
 ### コンセプト
 
 ```bash
 # 1. よく使うリポジトリを事前登録（bare clone される）
-wtx register git@github.com:org/frontend.git
-wtx register git@github.com:org/backend.git
-# → ~/.wtx/frontend.git/, ~/.wtx/backend.git/ に bare clone
+wx register git@github.com:org/frontend.git
+wx register git@github.com:org/backend.git
+# → ~/.wx/frontend.git/, ~/.wx/backend.git/ に bare clone
 
 # 2. 作業ディレクトリで実行
 cd ~/work/feature-auth
-wtx
+wx
 
 # 3. インタラクティブ UI で選択
 #    - リポジトリを複数選択
@@ -58,27 +58,27 @@ wtx
 
 | 用語                 | 定義                                                                                                   |
 | -------------------- | ------------------------------------------------------------------------------------------------------ |
-| **登録リポジトリ**   | `wtx register` で登録された Git リポジトリ。`~/.wtx/config.json` に保存                                |
+| **登録リポジトリ**   | `wx register` で登録された Git リポジトリ。`~/.wx/config.json` に保存                                  |
 | **worktree**         | Git の worktree 機能で作成された作業ディレクトリ。元リポジトリとは別の場所でブランチを checkout できる |
 | **workspace**        | VSCode/Kiro の `.code-workspace` ファイル。複数フォルダを 1 つのウィンドウで開ける                     |
-| **作業ディレクトリ** | `wtx` コマンドを実行するディレクトリ。ここに worktree と workspace が生成される                        |
+| **作業ディレクトリ** | `wx` コマンドを実行するディレクトリ。ここに worktree と workspace が生成される                         |
 
 ## 機能一覧
 
 ### コア機能
 
-| コマンド                | 説明                                                 |
-| ----------------------- | ---------------------------------------------------- |
-| `wtx register <url>`    | Git リポジトリを bare clone して登録                 |
-| `wtx list`              | 登録済みリポジトリ一覧表示                           |
-| `wtx unregister <name>` | 登録解除                                             |
-| `wtx`                   | インタラクティブ UI 起動 → worktree + workspace 生成 |
-| `wtx clean`             | 作業ディレクトリの worktree + workspace を削除       |
+| コマンド               | 説明                                                 |
+| ---------------------- | ---------------------------------------------------- |
+| `wx register <url>`    | Git リポジトリを bare clone して登録                 |
+| `wx list`              | 登録済みリポジトリ一覧表示                           |
+| `wx unregister <name>` | 登録解除                                             |
+| `wx`                   | インタラクティブ UI 起動 → worktree + workspace 生成 |
+| `wx clean`             | 作業ディレクトリの worktree + workspace を削除       |
 
 ### インタラクティブ UI フロー
 
 ```
-┌─ wtx ─────────────────────────────────────────────────┐
+┌─ wx ──────────────────────────────────────────────────┐
 │ Select repositories (Space: toggle, Enter: confirm)  │
 │                                                       │
 │ ◉ frontend     [main]           ▼ (ブランチ選択)     │
@@ -116,7 +116,7 @@ wtx
 ### ディレクトリ構造
 
 ```
-~/.wtx/
+~/.wx/
   ├── config.json           # 登録リポジトリ一覧（メタデータ）
   ├── frontend.git/         # bare リポジトリ（clone）
   └── backend.git/          # bare リポジトリ（clone）
@@ -130,12 +130,12 @@ wtx
     {
       "name": "frontend",
       "remote": "git@github.com:org/frontend.git",
-      "localPath": "~/.wtx/frontend.git"
+      "localPath": "~/.wx/frontend.git"
     },
     {
       "name": "backend",
       "remote": "git@github.com:org/backend.git",
-      "localPath": "~/.wtx/backend.git"
+      "localPath": "~/.wx/backend.git"
     }
   ]
 }

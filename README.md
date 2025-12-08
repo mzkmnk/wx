@@ -1,4 +1,4 @@
-# wtx
+# wx
 
 A CLI tool for managing Git worktrees and VSCode/Kiro workspaces.
 
@@ -15,14 +15,14 @@ A CLI tool for managing Git worktrees and VSCode/Kiro workspaces.
 ### From crates.io
 
 ```bash
-cargo install wtx
+cargo install wx
 ```
 
 ### From source
 
 ```bash
-git clone https://github.com/mzkmnk/wtx.git
-cd wtx
+git clone https://github.com/mzkmnk/wx.git
+cd wx
 cargo install --path .
 ```
 
@@ -31,23 +31,23 @@ cargo install --path .
 ### Register repositories
 
 ```bash
-wtx register git@github.com:org/frontend.git
-wtx register git@github.com:org/backend.git
+wx register git@github.com:org/frontend.git
+wx register git@github.com:org/backend.git
 ```
 
-Registered repositories are bare cloned to `~/.wtx/`.
+Registered repositories are bare cloned to `~/.wx/`.
 
 ### List registered repositories
 
 ```bash
-wtx list
+wx list
 ```
 
 ### Create a workspace
 
 ```bash
 cd ~/work
-wtx new feature-auth
+wx new feature-auth
 ```
 
 Select repositories and branches interactively, then a `feature-auth/` directory will be created containing worktrees and a `.code-workspace` file.
@@ -55,13 +55,13 @@ Select repositories and branches interactively, then a `feature-auth/` directory
 ### Unregister a repository
 
 ```bash
-wtx unregister frontend
+wx unregister frontend
 ```
 
 ## Data Location
 
 ```
-~/.wtx/
+~/.wx/
 ├── config.json        # Registered repositories
 ├── frontend.git/      # Bare repository
 └── backend.git/       # Bare repository

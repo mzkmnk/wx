@@ -49,8 +49,8 @@ impl WorkspaceFile {
 
 #[derive(Debug, Clone)]
 pub enum CleanTarget {
-    All,              // wtx clean --all
-    Worktree(String), // wtx clean <worktree>
+    All,              // wx clean --all
+    Worktree(String), // wx clean <worktree>
 }
 
 #[derive(Debug)]

@@ -2,16 +2,16 @@
 
 ## はじめに
 
-ワークスペース生成機能は、wtx CLI ツールのコアロジックを提供します。この機能により、登録済みの bare リポジトリから Git worktree を作成し、それらを含む VSCode/Kiro の workspace ファイル（.code-workspace）を自動生成します。これにより、複数リポジトリの異なるブランチで並列開発を行う際の手作業を大幅に削減します。
+ワークスペース生成機能は、wx CLI ツールのコアロジックを提供します。この機能により、登録済みの bare リポジトリから Git worktree を作成し、それらを含む VSCode/Kiro の workspace ファイル（.code-workspace）を自動生成します。これにより、複数リポジトリの異なるブランチで並列開発を行う際の手作業を大幅に削減します。
 
 ## 用語集
 
-- **wtx**: Git worktree と VSCode workspace を管理する CLI ツール
+- **wx**: Git worktree と VSCode workspace を管理する CLI ツール
 - **ワークスペース生成システム**: worktree 作成と workspace ファイル生成を管理するサブシステム
 - **worktree**: Git の worktree 機能で作成された作業ディレクトリ。元リポジトリとは別の場所でブランチを checkout できる
 - **workspace ファイル**: VSCode/Kiro の `.code-workspace` ファイル。複数フォルダを 1 つのウィンドウで開ける
-- **作業ディレクトリ**: `wtx` コマンドを実行するディレクトリ。ここに worktree と workspace が生成される
-- **登録リポジトリ**: `wtx register` で登録された Git リポジトリ。`~/.wtx/config.json` に保存されている
+- **作業ディレクトリ**: `wx` コマンドを実行するディレクトリ。ここに worktree と workspace が生成される
+- **登録リポジトリ**: `wx register` で登録された Git リポジトリ。`~/.wx/config.json` に保存されている
 - **bare リポジトリ**: 作業ディレクトリを持たない Git リポジトリで、worktree の親として機能する
 - **ブランチ**: Git のブランチ。worktree 作成時に指定する
 
@@ -24,7 +24,7 @@
 #### 受け入れ基準
 
 1. WHEN ユーザーがリポジトリ名とブランチ名を指定して worktree 作成を要求する THEN ワークスペース生成システムは作業ディレクトリ内に `<リポジトリ名>/` ディレクトリとして worktree を作成しなければならない
-2. WHEN worktree を作成する THEN ワークスペース生成システムは登録済み bare リポジトリ（~/.wtx/<name>.git）を親として使用しなければならない
+2. WHEN worktree を作成する THEN ワークスペース生成システムは登録済み bare リポジトリ（~/.wx/<name>.git）を親として使用しなければならない
 3. WHEN 指定されたブランチがリモートに存在する THEN ワークスペース生成システムはそのブランチを checkout した worktree を作成しなければならない
 4. WHEN 指定されたブランチがリモートに存在しない THEN ワークスペース生成システムは新しいブランチを作成して worktree を作成しなければならない
 5. WHEN 同じ場所に既に worktree が存在する THEN ワークスペース生成システムはエラーを返し、既存の worktree を上書きしてはならない
@@ -58,12 +58,12 @@
 
 #### 受け入れ基準
 
-1. WHEN ユーザーが `wtx clean <workspace名>` を実行する THEN ワークスペース生成システムは指定された workspace に関連する worktree と workspace ファイルを削除しなければならない
-2. WHEN ユーザーが `wtx clean --all` を実行する THEN ワークスペース生成システムは作業ディレクトリ内のすべての wtx 管理 worktree と workspace ファイルを削除しなければならない
-3. WHEN ユーザーが引数なしで `wtx clean` を実行する THEN ワークスペース生成システムは使用方法を表示し、削除を実行してはならない
+1. WHEN ユーザーが `wx clean <workspace名>` を実行する THEN ワークスペース生成システムは指定された workspace に関連する worktree と workspace ファイルを削除しなければならない
+2. WHEN ユーザーが `wx clean --all` を実行する THEN ワークスペース生成システムは作業ディレクトリ内のすべての wx 管理 worktree と workspace ファイルを削除しなければならない
+3. WHEN ユーザーが引数なしで `wx clean` を実行する THEN ワークスペース生成システムは使用方法を表示し、削除を実行してはならない
 4. WHEN worktree を削除する THEN ワークスペース生成システムは Git の worktree prune を実行して親リポジトリの参照を更新しなければならない
 5. WHEN worktree 削除が完了する THEN ワークスペース生成システムは対応する `.code-workspace` ファイルを削除しなければならない
-6. WHEN 作業ディレクトリに wtx 管理外のファイルが存在する THEN ワークスペース生成システムはそれらのファイルを削除してはならない
+6. WHEN 作業ディレクトリに wx 管理外のファイルが存在する THEN ワークスペース生成システムはそれらのファイルを削除してはならない
 7. WHEN 削除対象の worktree が存在しない THEN ワークスペース生成システムは警告メッセージを表示し、処理を継続しなければならない
 
 ### 要件 5

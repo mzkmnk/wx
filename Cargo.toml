@@ -1,12 +1,12 @@
 [package]
-name = "wtx"
+name = "wx"
 version = "0.0.1"
 description = "A CLI tool for managing Git worktrees and VSCode workspaces"
 authors = ["mzkmnk <mzk.mnk.dev@gmail.com>"]
 license = "MIT"
 edition = "2021"
-repository = "https://github.com/mzkmnk/wtx"
-homepage = "https://github.com/mzkmnk/wtx"
+repository = "https://github.com/mzkmnk/wx"
+homepage = "https://github.com/mzkmnk/wx"
 readme = "README.md"
 keywords = ["git", "worktree", "workspace", "vscode", "cli"]
 categories = ["command-line-utilities", "development-tools"]

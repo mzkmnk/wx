@@ -31,11 +31,11 @@ impl App {
 
     /// Renders the user interface.
     fn render(&mut self, frame: &mut Frame) {
-        let title = Line::from("wtx - Git worktree and workspace manager")
+        let title = Line::from("wx - Git worktree and workspace manager")
             .bold()
             .blue()
             .centered();
-        let text = "Welcome to wtx!\n\n\
+        let text = "Welcome to wx!\n\n\
             A CLI tool for managing Git worktrees and VSCode workspaces.\n\
             Press `Esc`, `Ctrl-C` or `q` to stop running.";
         frame.render_widget(

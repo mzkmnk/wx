@@ -1,4 +1,4 @@
-# wtx - プロジェクト構造
+# wx - プロジェクト構造
 
 ## アーキテクチャ
 
@@ -35,7 +35,7 @@ src/
 
 - `Config` - 設定ファイル構造（repositories リスト）
 - `Repository` - 登録リポジトリ情報（name, remote, local_path）
-- `WtxError` - 統一エラー型（thiserror 使用）
+- `WxError` - 統一エラー型（thiserror 使用）
 - `RepositoryService` - リポジトリ登録・解除のビジネスロジック
 - `ConfigManager` - 設定ファイルの読み書き・バックアップ
 

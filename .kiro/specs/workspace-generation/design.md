@@ -2,7 +2,7 @@
 
 ## 概要
 
-ワークスペース生成機能は、wtx CLI ツールのコアロジックを提供します。この機能は、登録済みの bare リポジトリから Git worktree を作成し、それらを含む VSCode/Kiro の workspace ファイル（.code-workspace）を自動生成します。
+ワークスペース生成機能は、wx CLI ツールのコアロジックを提供します。この機能は、登録済みの bare リポジトリから Git worktree を作成し、それらを含む VSCode/Kiro の workspace ファイル（.code-workspace）を自動生成します。
 
 主要な責務:
 
@@ -213,7 +213,7 @@ impl WorkspaceFile {
 pub enum CleanTarget {
     /// Clean specific workspace by name
     Workspace(String),
-    /// Clean all wtx-managed worktrees and workspaces
+    /// Clean all wx-managed worktrees and workspaces
     All,
 }
 ```
@@ -290,7 +290,7 @@ _プロパティとは、システムのすべての有効な実行において�
 
 ### プロパティ 2: worktree の親リポジトリ検証
 
-*任意の*作成された worktree に対して、その親リポジトリは登録済み bare リポジトリ（~/.wtx/<name>.git）でなければならない
+*任意の*作成された worktree に対して、その親リポジトリは登録済み bare リポジトリ（~/.wx/<name>.git）でなければならない
 **検証: 要件 1.2**
 
 ### プロパティ 3: 既存ブランチの checkout
@@ -345,12 +345,12 @@ _プロパティとは、システムのすべての有効な実行において�
 
 ### プロパティ 13: 指定 workspace のクリーンアップ
 
-_任意の_`wtx clean <workspace名>` 実行に対して、指定された workspace に関連する worktree と workspace ファイルのみが削除されなければならない
+_任意の_`wx clean <workspace名>` 実行に対して、指定された workspace に関連する worktree と workspace ファイルのみが削除されなければならない
 **検証: 要件 4.1**
 
 ### プロパティ 14: 全体クリーンアップ
 
-_任意の_`wtx clean --all` 実行に対して、作業ディレクトリ内のすべての wtx 管理 worktree と workspace ファイルが削除されなければならない
+_任意の_`wx clean --all` 実行に対して、作業ディレクトリ内のすべての wx 管理 worktree と workspace ファイルが削除されなければならない
 **検証: 要件 4.2**
 
 ### プロパティ 15: worktree prune の実行
@@ -360,7 +360,7 @@ _任意の_`wtx clean --all` 実行に対して、作業ディレクトリ内の
 
 ### プロパティ 16: 管理外ファイルの保護
 
-*任意の*クリーンアップ操作に対して、wtx 管理外のファイルは削除されてはならない
+*任意の*クリーンアップ操作に対して、wx 管理外のファイルは削除されてはならない
 **検証: 要件 4.6**
 
 ### プロパティ 17: JSON 形式の有効性
@@ -526,11 +526,11 @@ src/
 }
 ```
 
-### wtx 管理ファイルの識別
+### wx 管理ファイルの識別
 
-wtx が管理する worktree と workspace を識別するため、以下の方法を使用:
+wx が管理する worktree と workspace を識別するため、以下の方法を使用:
 
-1. **worktree**: Git の worktree 情報から親リポジトリが `~/.wtx/` 配下かを確認
+1. **worktree**: Git の worktree 情報から親リポジトリが `~/.wx/` 配下かを確認
 2. **workspace ファイル**: `.code-workspace` 拡張子を持つファイル
 
 ### パフォーマンス考慮事項

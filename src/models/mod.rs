@@ -4,5 +4,5 @@ pub mod repository;
 pub mod workspace;
 
 pub use config::Config;
-pub use error::WtxError;
+pub use error::WxError;
 pub use repository::Repository;

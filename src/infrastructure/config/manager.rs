@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 
 use serde_json::{from_str, to_string_pretty};
 
-use crate::models::error::WtxError;
+use crate::models::error::WxError;
 use crate::models::Config;
 
 pub struct ConfigManager {
@@ -12,10 +12,10 @@ pub struct ConfigManager {
 }
 
 impl ConfigManager {
-    pub fn new() -> Result<Self, WtxError> {
+    pub fn new() -> Result<Self, WxError> {
         let base_dir = dirs::home_dir()
-            .ok_or(WtxError::HomeDirNotFound)?
-            .join(".wtx");
+            .ok_or(WxError::HomeDirNotFound)?
+            .join(".wx");
 
         Ok(Self::with_base_dir(&base_dir))
     }
@@ -27,7 +27,7 @@ impl ConfigManager {
         }
     }
 
-    pub fn load(&self) -> Result<Config, WtxError> {
+    pub fn load(&self) -> Result<Config, WxError> {
         if !self.config_path.exists() {
             return Ok(Config::new());
         }
@@ -38,7 +38,7 @@ impl ConfigManager {
         Ok(config)
     }
 
-    pub fn save(&self, config: &Config) -> Result<(), WtxError> {
+    pub fn save(&self, config: &Config) -> Result<(), WxError> {
         if let Some(parent_path) = self.config_path.parent() {
             create_dir_all(parent_path)?;
         }
@@ -48,9 +48,9 @@ impl ConfigManager {
         Ok(())
     }
 
-    pub fn create_backup(&self) -> Result<(), WtxError> {
+    pub fn create_backup(&self) -> Result<(), WxError> {
         if !self.config_path.exists() {
-            return Err(WtxError::BackupError(
+            return Err(WxError::BackupError(
                 "Cannot create backup: config.json not found".to_string(),
             ));
         }
@@ -59,9 +59,9 @@ impl ConfigManager {
         Ok(())
     }
 
-    pub fn restore_backup(&self) -> Result<(), WtxError> {
+    pub fn restore_backup(&self) -> Result<(), WxError> {
         if !self.backup_path.exists() {
-            return Err(WtxError::RestoreError(
+            return Err(WxError::RestoreError(
                 "Cannot restore backup: config.json.bak not found".to_string(),
             ));
         }
@@ -70,7 +70,7 @@ impl ConfigManager {
         Ok(())
     }
 
-    pub fn delete_backup(&self) -> Result<(), WtxError> {
+    pub fn delete_backup(&self) -> Result<(), WxError> {
         if self.backup_path.exists() {
             remove_file(&self.backup_path)?;
         }
@@ -98,7 +98,7 @@ mod tests {
             repositories: vec![Repository::new(
                 "frontend".to_string(),
                 "git@github.com:org/test.git".to_string(),
-                "/home/user/.wtx/test.git".to_string(),
+                "/home/user/.wx/test.git".to_string(),
             )],
         }
     }
@@ -107,43 +107,43 @@ mod tests {
         tempdir().unwrap()
     }
 
-    fn create_wtx_dir_path(dir: &TempDir) -> PathBuf {
-        dir.path().join(".wtx")
+    fn create_wx_dir_path(dir: &TempDir) -> PathBuf {
+        dir.path().join(".wx")
     }
 
     fn create_config_file(dir_path: &PathBuf) {
         create_dir_all(dir_path).unwrap();
-        let json = r#"{"repositories":[{"name":"test","remote":"git@github.com:org/test.git","local_path":"/home/user/.wtx/test.git"}]}"#;
+        let json = r#"{"repositories":[{"name":"test","remote":"git@github.com:org/test.git","local_path":"/home/user/.wx/test.git"}]}"#;
         write(dir_path.join("config.json"), json).unwrap();
     }
 
     fn create_config_backup_file(dir_path: &PathBuf) {
         create_dir_all(dir_path).unwrap();
-        let json = r#"{"repositories":[{"name":"test","remote":"git@github.com:org/test.git","local_path":"/home/user/.wtx/test.git"}]}"#;
+        let json = r#"{"repositories":[{"name":"test","remote":"git@github.com:org/test.git","local_path":"/home/user/.wx/test.git"}]}"#;
         write(dir_path.join("config.json.bak"), json).unwrap();
     }
 
     #[test]
     fn test_config_manager_new() {
         let dir = create_temp_dir();
-        let wtx_dir_path = create_wtx_dir_path(&dir);
-        let config_manager = ConfigManager::with_base_dir(&wtx_dir_path);
+        let wx_dir_path = create_wx_dir_path(&dir);
+        let config_manager = ConfigManager::with_base_dir(&wx_dir_path);
 
-        assert_eq!(config_manager.config_path, wtx_dir_path.join("config.json"));
+        assert_eq!(config_manager.config_path, wx_dir_path.join("config.json"));
         assert_eq!(
             config_manager.backup_path,
-            wtx_dir_path.join("config.json.bak")
+            wx_dir_path.join("config.json.bak")
         );
     }
 
     #[test]
     fn test_config_manager_load() {
         let dir = create_temp_dir();
-        let wtx_dir_path = create_wtx_dir_path(&dir);
+        let wx_dir_path = create_wx_dir_path(&dir);
 
-        create_config_file(&wtx_dir_path);
+        create_config_file(&wx_dir_path);
 
-        let config_manager = ConfigManager::with_base_dir(&wtx_dir_path);
+        let config_manager = ConfigManager::with_base_dir(&wx_dir_path);
 
         let config = config_manager.load().unwrap();
         assert_eq!(config.repositories.len(), 1);
@@ -152,50 +152,50 @@ mod tests {
     #[test]
     fn test_config_manager_save() {
         let dir = create_temp_dir();
-        let wtx_dir_path = create_wtx_dir_path(&dir);
-        let config_manager = ConfigManager::with_base_dir(&wtx_dir_path);
+        let wx_dir_path = create_wx_dir_path(&dir);
+        let config_manager = ConfigManager::with_base_dir(&wx_dir_path);
         let config = create_config();
 
         assert!(config_manager.save(&config).is_ok());
-        assert!(wtx_dir_path.join("config.json").exists());
+        assert!(wx_dir_path.join("config.json").exists());
     }
 
     #[test]
     fn test_config_manager_create_backup() {
         let dir = create_temp_dir();
-        let wtx_dir_path = create_wtx_dir_path(&dir);
+        let wx_dir_path = create_wx_dir_path(&dir);
 
-        create_config_file(&wtx_dir_path);
+        create_config_file(&wx_dir_path);
 
-        let config_manager = ConfigManager::with_base_dir(&wtx_dir_path);
+        let config_manager = ConfigManager::with_base_dir(&wx_dir_path);
 
         assert!(config_manager.create_backup().is_ok());
-        assert!(wtx_dir_path.join("config.json.bak").exists());
+        assert!(wx_dir_path.join("config.json.bak").exists());
     }
 
     #[test]
     fn test_config_manager_restore_backup() {
         let dir = create_temp_dir();
-        let wtx_dir_path = create_wtx_dir_path(&dir);
+        let wx_dir_path = create_wx_dir_path(&dir);
 
-        create_config_backup_file(&wtx_dir_path);
+        create_config_backup_file(&wx_dir_path);
 
-        let config_manager = ConfigManager::with_base_dir(&wtx_dir_path);
+        let config_manager = ConfigManager::with_base_dir(&wx_dir_path);
 
         assert!(config_manager.restore_backup().is_ok());
-        assert!(wtx_dir_path.join("config.json").exists());
+        assert!(wx_dir_path.join("config.json").exists());
     }
 
     #[test]
     fn test_config_manager_delete_backup() {
         let dir = create_temp_dir();
-        let wtx_dir_path = create_wtx_dir_path(&dir);
+        let wx_dir_path = create_wx_dir_path(&dir);
 
-        create_config_backup_file(&wtx_dir_path);
+        create_config_backup_file(&wx_dir_path);
 
-        let config_manager = ConfigManager::with_base_dir(&wtx_dir_path);
+        let config_manager = ConfigManager::with_base_dir(&wx_dir_path);
 
         assert!(config_manager.delete_backup().is_ok());
-        assert!(!wtx_dir_path.join("config.json.bak").exists());
+        assert!(!wx_dir_path.join("config.json.bak").exists());
     }
 }
