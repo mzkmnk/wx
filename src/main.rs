@@ -16,13 +16,33 @@ pub mod services;
 pub mod tui;
 pub mod utils;
 
+fn print_welcome() {
+    // ASCII art logo for wx (block style)
+    let logo_lines = [
+        "██╗    ██╗██╗  ██╗",
+        "██║    ██║╚██╗██╔╝",
+        "██║ █╗ ██║ ╚███╔╝ ",
+        "██║███╗██║ ██╔██╗ ",
+        "╚███╔███╔╝██╔╝ ██╗",
+        " ╚══╝╚══╝ ╚═╝  ╚═╝",
+    ];
+
+    println!();
+    for line in &logo_lines {
+        println!("  {}", style(*line).cyan());
+    }
+}
+
 fn main() -> color_eyre::Result<()> {
     color_eyre::install()?;
 
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::Register { url } => match commands::register::execute(&url) {
+        None => {
+            print_welcome();
+        }
+        Some(Commands::Register { url }) => match commands::register::execute(&url) {
             Ok(_) => println!("Registered: {}", style(url).cyan()),
             Err(e) => match e {
                 WxError::AlreadyRegistered(_) => {
@@ -35,7 +55,7 @@ fn main() -> color_eyre::Result<()> {
                 _ => return Err(e.into()),
             },
         },
-        Commands::List => match commands::list::execute() {
+        Some(Commands::List) => match commands::list::execute() {
             Ok(repos) => {
                 if repos.is_empty() {
                     println!("{}", style("No registered repositories.").yellow())
@@ -58,7 +78,7 @@ fn main() -> color_eyre::Result<()> {
             }
             Err(e) => return Err(e.into()),
         },
-        Commands::New { workspace_name } => match commands::new::execute(workspace_name) {
+        Some(Commands::New { workspace_name }) => match commands::new::execute(workspace_name) {
             Ok(_) => {
                 println!("{}", style("Workspace created.").green());
             }
@@ -69,7 +89,7 @@ fn main() -> color_eyre::Result<()> {
                 _ => return Err(e.into()),
             },
         },
-        Commands::Unregister { name: _name } => {
+        Some(Commands::Unregister { name: _name }) => {
             todo!()
         }
     }
