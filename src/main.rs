@@ -58,9 +58,17 @@ fn main() -> color_eyre::Result<()> {
             }
             Err(e) => return Err(e.into()),
         },
-        Commands::New { workspace_name } => {
-            commands::new::execute(workspace_name)?;
-        }
+        Commands::New { workspace_name } => match commands::new::execute(workspace_name) {
+            Ok(_) => {
+                println!("{}", style("Workspace created.").green());
+            }
+            Err(e) => match e {
+                WtxError::General(e) => {
+                    println!("{}", style(e).red())
+                }
+                _ => return Err(e.into()),
+            },
+        },
         Commands::Unregister { name: _name } => {
             todo!()
         }

@@ -29,6 +29,10 @@ pub fn execute(workspace_name: String) -> Result<(), WtxError> {
 
     match selected_repos {
         Ok(selected_repos) => {
+            if selected_repos.is_empty() {
+                return Err(WtxError::General("No repositories selected".to_string()));
+            }
+
             for idx in selected_repos {
                 let branch_name: String = Input::new()
                     .with_prompt(format!("Branch for {name}", name = repos[idx].name))
@@ -42,7 +46,10 @@ pub fn execute(workspace_name: String) -> Result<(), WtxError> {
 
             let workspace_dir = get_current_dir()?.join(&workspace_name);
             if workspace_dir.exists() {
-                return Err(WtxError::General(format!("Workspace directory '{}' already exists", workspace_name)));
+                return Err(WtxError::General(format!(
+                    "Workspace directory '{}' already exists",
+                    workspace_name
+                )));
             }
             fs::create_dir_all(&workspace_dir)?;
 
@@ -56,7 +63,9 @@ pub fn execute(workspace_name: String) -> Result<(), WtxError> {
             )?;
         }
         Err(_) => {
-            return Err(WtxError::General("Repository selection was cancelled".to_string()));
+            return Err(WtxError::General(
+                "Repository selection was cancelled".to_string(),
+            ));
         }
     }
 
