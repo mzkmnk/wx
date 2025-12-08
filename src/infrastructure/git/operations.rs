@@ -57,7 +57,7 @@ mod tests {
 
     #[test]
     fn test_validate_url_https_valid() {
-        let git_operations = GitOperations::default();
+        let git_operations = GitOperations;
 
         assert!(git_operations
             .validate_url("https://github.com/org/repo.git")
@@ -74,7 +74,7 @@ mod tests {
 
     #[test]
     fn test_validate_url_ssh_valid() {
-        let git_operations = GitOperations::default();
+        let git_operations = GitOperations;
 
         assert!(git_operations
             .validate_url("git@github.com:org/repo.git")
@@ -95,7 +95,7 @@ mod tests {
 
     #[test]
     fn test_validate_url_invalid() {
-        let git_operations = GitOperations::default();
+        let git_operations = GitOperations;
 
         assert!(git_operations.validate_url("").is_err());
 
@@ -108,7 +108,7 @@ mod tests {
 
     #[test]
     fn test_extract_repo_name() {
-        let git_operations = GitOperations::default();
+        let git_operations = GitOperations;
 
         assert_eq!(
             git_operations
@@ -167,7 +167,7 @@ mod tests {
         let target_path = dir.path().join("target.git");
         let source_repo = create_test_git_repo(dir.path(), "source");
 
-        let git_operations = GitOperations::default();
+        let git_operations = GitOperations;
 
         assert!(git_operations
             .bare_clone(source_repo.to_str().unwrap(), &target_path)

@@ -42,7 +42,7 @@ pub fn execute(workspace_name: String) -> Result<(), WtxError> {
 
             match get_wtx_home() {
                 Some(wtx_home) => {
-                    let worktree_manager = DefaultWorktreeManager::default();
+                    let worktree_manager = DefaultWorktreeManager;
 
                     WorkspaceGenerationService::new(worktree_manager, wtx_home)?.generate(
                         &workspace_dir,

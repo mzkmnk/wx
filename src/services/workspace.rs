@@ -27,7 +27,7 @@ impl<W: WorktreeManager> WorkspaceGenerationService<W> {
     ///
     /// ja: 指定したリポジトリのブランチを返却する
     pub fn get_branches(&self, repo_name: &str) -> Result<Vec<String>, WtxError> {
-        let bare_repo_path = self.wtx_home.join(format!("{}.git", repo_name));
+        let bare_repo_path = self.wtx_home.join(format!("{repo_name}.git"));
         self.worktree_manager.fetch(&bare_repo_path)?;
         self.worktree_manager.get_remote_branches(&bare_repo_path)
     }
@@ -131,7 +131,7 @@ mod tests {
             },
         ];
 
-        let worktree_manager = DefaultWorktreeManager::default();
+        let worktree_manager = DefaultWorktreeManager;
 
         let workspace_generation_service =
             WorkspaceGenerationService::new(worktree_manager, base_dir).unwrap();

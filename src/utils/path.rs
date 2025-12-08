@@ -17,7 +17,7 @@ pub fn get_backup_path() -> Option<PathBuf> {
     get_wtx_home().map(|wtx_home| wtx_home.join("config.backup.json"))
 }
 
-/// en: Returns the current working directory path 
+/// en: Returns the current working directory path
 ///
 /// ja: 現在いるディレクトリパスを返却する
 pub fn get_current_dir() -> Result<PathBuf, WtxError> {

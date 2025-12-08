@@ -103,7 +103,7 @@ impl WorktreeManager for DefaultWorktreeManager {
             Ok(b) => b,
             Err(_) => {
                 // Try to find remote branch
-                match repo.find_branch(&format!("origin/{}", branch), BranchType::Remote) {
+                match repo.find_branch(&format!("origin/{branch}"), BranchType::Remote) {
                     Ok(remote) => {
                         // Create local branch from remote
                         let commit = remote.get().peel_to_commit()?;
@@ -182,7 +182,7 @@ mod tests {
         add_test_remote_branch(&bare_repo, "main");
         add_test_remote_branch(&bare_repo, "auth");
 
-        let worktree_manager = DefaultWorktreeManager::default();
+        let worktree_manager = DefaultWorktreeManager;
 
         let remote_branches = worktree_manager
             .get_remote_branches(&bare_repo_path)
@@ -200,7 +200,7 @@ mod tests {
         add_test_remote_branch(&bare_repo, "auth");
         add_test_remote_branch(&bare_repo, "dashboard");
 
-        let worktree_manager = DefaultWorktreeManager::default();
+        let worktree_manager = DefaultWorktreeManager;
 
         assert!(worktree_manager
             .branch_exists(&bare_repo_path, "main")

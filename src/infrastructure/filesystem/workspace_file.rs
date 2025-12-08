@@ -16,7 +16,7 @@ impl WorkspaceFileManager {
         folders: Vec<String>,
     ) -> Result<(), WtxError> {
         let workspace_file = WorkspaceFile::new(folders);
-        let workspace_file_path = workspace_dir.join(format!("{}.code-workspace", workspace_name));
+        let workspace_file_path = workspace_dir.join(format!("{workspace_name}.code-workspace"));
 
         if workspace_file_path.exists() {
             return Err(WtxError::WorkspaceFileAlreadyExists(
@@ -42,7 +42,7 @@ impl WorkspaceFileManager {
     ///
     /// ja: 指定されたパスにworkspaceファイルが存在するか確認
     pub fn exists(&self, working_dir: &Path, workspace_name: &str) -> bool {
-        let workspace_file_path = working_dir.join(format!("{}.code-workspace", workspace_name));
+        let workspace_file_path = working_dir.join(format!("{workspace_name}.code-workspace"));
         workspace_file_path.exists()
     }
 
@@ -50,7 +50,7 @@ impl WorkspaceFileManager {
     ///
     /// ja: 指定されたパスのworkspaceファイルを削除
     pub fn delete(&self, working_dir: &Path, workspace_name: &str) -> Result<(), WtxError> {
-        let workspace_file_path = working_dir.join(format! {"{}.code-workspace",workspace_name});
+        let workspace_file_path = working_dir.join(format! {"{workspace_name}.code-workspace"});
         fs::remove_file(workspace_file_path)?;
         Ok(())
     }
@@ -72,7 +72,7 @@ mod tests {
         let frontend_repo_path = create_test_git_repo(&parent_path, "frontend");
         let backend_repo_path = create_test_git_repo(&parent_path, "backend");
 
-        let workspace_file_manager = WorkspaceFileManager::default();
+        let workspace_file_manager = WorkspaceFileManager;
 
         workspace_file_manager
             .generate(
@@ -95,7 +95,7 @@ mod tests {
         let frontend_repo_path = create_test_git_repo(&parent_path, "frontend");
         let backend_repo_path = create_test_git_repo(&parent_path, "backend");
 
-        let workspace_file_manager = WorkspaceFileManager::default();
+        let workspace_file_manager = WorkspaceFileManager;
 
         workspace_file_manager
             .generate(
@@ -138,7 +138,7 @@ mod tests {
             ],
         );
 
-        let workspace_file_manager = WorkspaceFileManager::default();
+        let workspace_file_manager = WorkspaceFileManager;
 
         let workspace_file = workspace_file_manager
             .read(&parent_path.join("wtx.code-workspace"))
@@ -157,7 +157,7 @@ mod tests {
 
     #[test]
     fn test_read_nonexistent_file() {
-        let workspace_file_manager = WorkspaceFileManager::default();
+        let workspace_file_manager = WorkspaceFileManager;
 
         assert!(workspace_file_manager
             .read(Path::new("nonexistent.code-workspace"))
@@ -171,7 +171,7 @@ mod tests {
 
         fs::create_dir_all(&parent_path).unwrap();
 
-        let workspace_file_manager = WorkspaceFileManager::default();
+        let workspace_file_manager = WorkspaceFileManager;
 
         fs::write(parent_path.join("wtx.code-workspace"), "invalid json").unwrap();
 
@@ -192,7 +192,7 @@ mod tests {
             vec![frontend_repo_path.to_string_lossy().to_string()],
         );
 
-        let workspace_file_manager = WorkspaceFileManager::default();
+        let workspace_file_manager = WorkspaceFileManager;
 
         assert!(workspace_file_manager.exists(&parent_path, "wtx"));
         assert!(!workspace_file_manager.exists(&parent_path, "nonexistent"));
@@ -210,7 +210,7 @@ mod tests {
             vec![frontend_repo_path.to_string_lossy().to_string()],
         );
 
-        let workspace_file_manager = WorkspaceFileManager::default();
+        let workspace_file_manager = WorkspaceFileManager;
 
         assert!(workspace_file_manager.delete(&parent_path, "wtx").is_ok());
         assert!(!parent_path
