@@ -31,6 +31,28 @@ fn print_welcome() {
     for line in &logo_lines {
         println!("  {}", style(*line).cyan());
     }
+    println!();
+    println!(
+        "  {}",
+        style("Git worktree & workspace manager").italic().dim()
+    );
+    println!();
+    println!(
+        "  {}  {}",
+        style("wx list").cyan(),
+        style("List registered repositories").dim()
+    );
+    println!(
+        "  {}  {}",
+        style("wx register <repository url>").cyan(),
+        style("Register a Git repository").dim()
+    );
+    println!(
+        "  {}  {}",
+        style("wx new <workspace name>").cyan(),
+        style("Create a new workspace").dim()
+    );
+    println!();
 }
 
 fn main() -> color_eyre::Result<()> {
