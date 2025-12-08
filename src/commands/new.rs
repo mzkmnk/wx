@@ -53,7 +53,7 @@ pub fn execute(workspace_name: String) -> Result<(), WtxError> {
             )?;
         }
         Err(_) => {
-            todo!()
+            return Err(WtxError::General("Repository selection was cancelled".to_string()));
         }
     }
 
