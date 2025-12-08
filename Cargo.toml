@@ -1,6 +1,6 @@
 [package]
 name = "wtx"
-version = "0.1.0"
+version = "0.0.1"
 description = "A CLI tool for managing Git worktrees and VSCode workspaces"
 authors = ["mzkmnk <mzk.mnk.dev@gmail.com>"]
 license = "MIT"
