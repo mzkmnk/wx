@@ -14,6 +14,9 @@ use crate::{
 /// ja: `wtx new` コマンドを実行し、インタラクティブにworktreeとworkspaceファイルを作成する
 pub fn execute(workspace_name: String) -> Result<(), WtxError> {
     let repos = RepositoryService::new()?.list()?;
+    if repos.is_empty() {
+        return Err(WtxError::General("No repositories registered. Please register a repository first using 'wtx register <url>'".to_string()));
+    }
 
     let repos_name: Vec<&str> = repos.iter().map(|repo| repo.name.as_str()).collect();
 
