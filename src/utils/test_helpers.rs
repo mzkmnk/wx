@@ -28,7 +28,7 @@ pub fn create_test_git_repo(parent: &Path, name: &str) -> PathBuf {
 ///
 /// ja: テスト用のbareリポジトリを作成
 pub fn create_test_bare_repo(parent: &Path, name: &str) -> PathBuf {
-    let repo_path = parent.join(format!("{}.git", name));
+    let repo_path = parent.join(format!("{name}.git"));
     git2::Repository::init_bare(&repo_path).unwrap();
     repo_path
 }
@@ -39,8 +39,8 @@ pub fn create_test_bare_repo(parent: &Path, name: &str) -> PathBuf {
 pub fn create_test_repository(name: &str) -> Repository {
     Repository::new(
         name.to_string(),
-        format!("git@github.com:org/{}.git", name),
-        format!("/home/user/.wtx/{}.git", name),
+        format!("git@github.com:org/{name}.git"),
+        format!("/home/user/.wtx/{name}.git"),
     )
 }
 
@@ -70,7 +70,7 @@ pub fn add_test_remote_branch(repo: &git2::Repository, branch_name: &str) {
     let commit_oid = repo.commit(None, &sig, &sig, "Init", &tree, &[]).unwrap();
 
     repo.reference(
-        &format!("refs/remotes/origin/{}", branch_name),
+        &format!("refs/remotes/origin/{branch_name}"),
         commit_oid,
         true,
         "test setup",
@@ -83,7 +83,7 @@ pub fn add_test_remote_branch(repo: &git2::Repository, branch_name: &str) {
 /// ja: テスト用のworkspaceファイルを作成
 pub fn test_create_workspace_file(working_dir: &Path, workspace_name: &str, folders: Vec<String>) {
     let workspace_file = WorkspaceFile::new(folders);
-    let path = working_dir.join(format!("{}.code-workspace", workspace_name));
+    let path = working_dir.join(format!("{workspace_name}.code-workspace"));
     let json = serde_json::to_string(&workspace_file).unwrap();
     fs::write(path, json).unwrap();
 }

@@ -1,5 +1,7 @@
 use std::path::PathBuf;
 
+use crate::models::WtxError;
+
 /// Get the wtx home directory (~/.wtx)
 pub fn get_wtx_home() -> Option<PathBuf> {
     dirs::home_dir().map(|home| home.join(".wtx"))
@@ -13,6 +15,13 @@ pub fn get_config_path() -> Option<PathBuf> {
 /// Get the backup config file path (~/.wtx/config.backup.json)
 pub fn get_backup_path() -> Option<PathBuf> {
     get_wtx_home().map(|wtx_home| wtx_home.join("config.backup.json"))
+}
+
+/// en: Returns the current working directory path
+///
+/// ja: 現在いるディレクトリパスを返却する
+pub fn get_current_dir() -> Result<PathBuf, WtxError> {
+    Ok(std::env::current_dir()?)
 }
 
 #[cfg(test)]

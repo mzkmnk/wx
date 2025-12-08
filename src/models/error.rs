@@ -27,12 +27,14 @@ pub enum WtxError {
     #[error("Workspace file already exists: '{0}'")]
     WorkspaceFileAlreadyExists(String),
 
-    // Common errors
     #[error("Git operation failed: {0}")]
     GitError(#[from] git2::Error),
 
     #[error("IO operation failed: {0}")]
     IoError(#[from] std::io::Error),
+
+    #[error("Dialoguer operation failed: {0}")]
+    DialoguerError(#[from] dialoguer::Error),
 
     #[error("JSON parsing failed: {0}")]
     JsonError(#[from] serde_json::Error),
@@ -54,6 +56,12 @@ pub enum WtxError {
         original_error: String,
         rollback_error: String,
     },
+
+    /// en: Returns a general-purpose error
+    ///
+    /// ja: 汎用的なエラーを返却する
+    #[error("{0}")]
+    General(String),
 }
 
 impl WtxError {

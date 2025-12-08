@@ -27,7 +27,7 @@ impl<W: WorktreeManager> WorkspaceGenerationService<W> {
     ///
     /// ja: 指定したリポジトリのブランチを返却する
     pub fn get_branches(&self, repo_name: &str) -> Result<Vec<String>, WtxError> {
-        let bare_repo_path = self.wtx_home.join(format!("{}.git", repo_name));
+        let bare_repo_path = self.wtx_home.join(format!("{repo_name}.git"));
         self.worktree_manager.fetch(&bare_repo_path)?;
         self.worktree_manager.get_remote_branches(&bare_repo_path)
     }
@@ -37,13 +37,13 @@ impl<W: WorktreeManager> WorkspaceGenerationService<W> {
     /// ja: 指定された選択からworktreeを含むworkspaceを生成する
     pub fn generate(
         &self,
-        working_dir: &Path,
+        workspace_dir: &Path,
         worktree_selection: Vec<WorktreeSelection>,
         workspace_name: &str,
     ) -> Result<(), WtxError> {
         // create workspace file
         self.workspace_file_manager.generate(
-            working_dir,
+            workspace_dir,
             workspace_name,
             worktree_selection
                 .iter()
@@ -54,7 +54,7 @@ impl<W: WorktreeManager> WorkspaceGenerationService<W> {
         // create worktrees
         for ws in worktree_selection {
             let bare_repo_path = self.wtx_home.join(format!("{}.git", ws.repo_name));
-            let target_path = working_dir.join(&ws.branch);
+            let target_path = workspace_dir.join(&ws.branch);
             self.worktree_manager
                 .create_worktree(&bare_repo_path, &target_path, &ws.branch)?;
         }
@@ -131,7 +131,7 @@ mod tests {
             },
         ];
 
-        let worktree_manager = DefaultWorktreeManager::default();
+        let worktree_manager = DefaultWorktreeManager;
 
         let workspace_generation_service =
             WorkspaceGenerationService::new(worktree_manager, base_dir).unwrap();

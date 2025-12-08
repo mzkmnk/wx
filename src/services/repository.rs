@@ -60,7 +60,7 @@ impl RepositoryService {
         remove_dir_all(
             self.config_manager
                 .base_dir()
-                .join(format!("{}.git", repo_name)),
+                .join(format!("{repo_name}.git")),
         )?;
 
         Ok(())
