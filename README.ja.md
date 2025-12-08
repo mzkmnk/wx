@@ -10,6 +10,8 @@ Git worktree と VSCode/Kiro workspace を統合管理する CLI ツール。
 - worktree + workspace ファイルを自動生成
 - 並列開発のセットアップを高速化
 
+![wx screenshot](docs/images/screenshot.png)
+
 ## インストール
 
 ### crates.io から

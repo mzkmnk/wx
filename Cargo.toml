@@ -1,6 +1,6 @@
 [package]
 name = "wx"
-version = "0.0.1"
+version = "0.0.2"
 description = "A CLI tool for managing Git worktrees and VSCode workspaces"
 authors = ["mzkmnk <mzk.mnk.dev@gmail.com>"]
 license = "MIT"

@@ -10,6 +10,8 @@ A CLI tool for managing Git worktrees and VSCode/Kiro workspaces.
 - Automatic generation of worktrees and workspace files
 - Accelerate parallel development setup
 
+![wx screenshot](docs/images/screenshot.png)
+
 ## Installation
 
 ### From crates.io
