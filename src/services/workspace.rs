@@ -3,6 +3,7 @@ use std::path::{Path, PathBuf};
 use crate::{
     infrastructure::{filesystem::WorkspaceFileManager, git::WorktreeManager},
     models::{workspace::WorktreeSelection, WxError},
+    utils::sanitize_branch_name,
 };
 
 /// en: Service for generating workspaces with worktrees
@@ -47,14 +48,14 @@ impl<W: WorktreeManager> WorkspaceGenerationService<W> {
             workspace_name,
             worktree_selection
                 .iter()
-                .map(|ws| ws.branch.replace("/", "-"))
+                .map(|ws| sanitize_branch_name(&ws.branch))
                 .collect(),
         )?;
 
         // create worktrees
         for ws in worktree_selection {
             let bare_repo_path = self.wx_home.join(format!("{}.git", ws.repo_name));
-            let target_path = workspace_dir.join(ws.branch.replace("/", "-"));
+            let target_path = workspace_dir.join(sanitize_branch_name(&ws.branch));
             self.worktree_manager
                 .create_worktree(&bare_repo_path, &target_path, &ws.branch)?;
         }

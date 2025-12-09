@@ -24,6 +24,17 @@ pub fn get_current_dir() -> Result<PathBuf, WxError> {
     Ok(std::env::current_dir()?)
 }
 
+/// en: Sanitize branch name for use in file system paths
+///
+/// ja: ブランチ名をファイルシステムパスで使用できるようにサニタイズする
+pub fn sanitize_branch_name(branch: &str) -> String {
+    branch
+        .replace("/", "-")
+        .replace("\\", "-")
+        .replace(":", "-")
+        .replace(" ", "-")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
