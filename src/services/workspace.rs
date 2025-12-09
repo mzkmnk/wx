@@ -47,7 +47,7 @@ impl<W: WorktreeManager> WorkspaceGenerationService<W> {
             workspace_name,
             worktree_selection
                 .iter()
-                .map(|ws| ws.branch.clone())
+                .map(|ws| ws.branch.replace("/", "-"))
                 .collect(),
         )?;
 
