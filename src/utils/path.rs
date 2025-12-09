@@ -25,13 +25,21 @@ pub fn get_current_dir() -> Result<PathBuf, WxError> {
 }
 
 /// en: Sanitize branch name for use in file system paths
+/// Replaces `/`, `\`, `:`, `*`, `?`, `"`, `<`, `>`, `|`, and spaces with `-`
 ///
 /// ja: ブランチ名をファイルシステムパスで使用できるようにサニタイズする
+/// `/`, `\`, `:`, `*`, `?`, `"`, `<`, `>`, `|`, スペースを `-` に置き換えます
 pub fn sanitize_branch_name(branch: &str) -> String {
     branch
         .replace("/", "-")
         .replace("\\", "-")
         .replace(":", "-")
+        .replace("*", "-")
+        .replace("?", "-")
+        .replace("\"", "-")
+        .replace("<", "-")
+        .replace(">", "-")
+        .replace("|", "-")
         .replace(" ", "-")
 }
 
