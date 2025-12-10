@@ -145,7 +145,7 @@ Clone ベースワークスペース機能は、wx CLI ツールの Git リポ�
 
 #### 受け入れ基準
 
-1. WHEN workspace を作成する THEN ワークスペース生成システムは UUID を生成して workspace の一意識別子として使用しなければならない
+1. WHEN workspace を作成する THEN ワークスペース生成システムは UUID v4（ランダム生成）を生成して workspace の一意識別子として使用しなければならない
 2. WHEN workspace を作成する THEN ワークスペース生成システムは作成日時（created_at）を記録しなければならない
 3. WHEN workspace を作成する THEN ワークスペース生成システムは更新日時（updated_at）を作成日時と同じ値で記録しなければならない
 4. WHEN workspace のメタデータを記録する THEN ワークスペース生成システムは workspace ファイルのパス、含まれるリポジトリ名、ブランチ名、clone パスを記録しなければならない
